@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <mat-toolbar color="primary">
+            <span>
+                Предузеће
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button type="submit" (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+           
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a> 
+            <a mat-button (click)="predji_na_pregled_izvestaja()">Преглед извештаја</a>
+            <a mat-button (click)="predji_na_izdavanje_racuna()">Издаванје рачуна</a> 
+            <a mat-button *ngIf="proveri_korisnika()" (click)="predji_na_stolove()">Распоред столова</a>
+            <a mat-button (click)="predji_na_raspored()">Распоред артикала</a>
+            <a mat-button class="selected" (click)="predji_na_robe_i_usluge()">Робе и услуге</a>
+            <a mat-button (click)="predji_na_narucioce()">Наручиоци</a>
+            <a mat-button (click)="predji_na_podatke()">Подаци о предузећу</a>
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Робе и услуге
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+
+                <mat-card-content class="cardContent">
+                    
+                    <mat-label class="podatak">Укупно редова: {{svi_artikli.length}}</mat-label>
+                        
+                    <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">                      
+                        
+                        <ng-container matColumnDef="sifra">
+                        <th *matHeaderCellDef> Sifra</th>
+                        <td *matCellDef="let element"><div class="centerItem">
+                            {{element.sifra}}
+                        </div></td>
+                        </ng-container>
+                    
+                        
+                        <ng-container matColumnDef="naziv">
+                            <th *matHeaderCellDef>Naziv</th>
+                            <td *matCellDef="let element">
+                                <div class="centerItem">
+                                    {{element.naziv}}
+                                </div>
+                            </td>
+                        </ng-container>
+                    
+                    
+                        <ng-container matColumnDef="jedinica_mere">
+                            <th  *matHeaderCellDef>Jedinica mere</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.jedinica_mere}}
+                                </div>
+                            </td>
+                        </ng-container>
+                    
+                    
+                        <ng-container matColumnDef="poreska_stopa">
+                        <th  *matHeaderCellDef>Poreska stopa</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                {{element.poreska_stopa}}
+                            </div>  
+                        </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="proizvodjac">
+                            <th  *matHeaderCellDef>Proizvodjac</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.dopunski_podaci.proizvodjac}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                            
+                        </tr>
+                    </table>
+                    
+                    <mat-paginator class="mat-elevation-z8" #scheduledOrdersPaginator [length]="svi_artikli.length" [pageSize]="velicina_strane" [pageSizeOptions]="[1, 2 ,3]" 
+                    showFirstLastButtons (page)="OnPageChange($event)"></mat-paginator> 
+
+                    <mat-expansion-panel class="expansion">
+                        <mat-expansion-panel-header class="centerItem">
+                        <mat-panel-title >
+                            Унос нових артикала
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="unosDiv1">
+                            <div class="divInList">
+                                <div class="labelaPodaci">
+                                    <mat-label>Oпшти подаци</mat-label>
+                                </div>
+                                <mat-list>
+                                    <form>
+                                        <mat-list-item class="prostorDole">
+                                            <mat-form-field appearance="fill">
+                                            <mat-label>Шифра</mat-label>
+                                            <input name="sifra" type="number" matInput placeholder="Унесите шифру производа" 
+                                            [(ngModel)]="sifra" required #greskaSifra="ngModel">
+                                            <mat-error *ngIf="greskaSifra.invalid">
+                                                Морате попунити поље
+                                            </mat-error>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </form>
+                                    <form> 
+                                        <mat-list-item class="prostorDole">
+                                            <mat-form-field appearance="fill">
+                                            <mat-label>Назив</mat-label>
+                                            <input name="naziv" type="text" matInput placeholder="Унесите назив производа" 
+                                            [(ngModel)]="naziv" required #greskaNaziv="ngModel">
+                                            <mat-error *ngIf="greskaNaziv.invalid">
+                                                Морате попунити поље
+                                            </mat-error>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </form>
+                                    <form>
+                                        
+                                        <mat-list-item class="prostorDole">
+                                            <mat-form-field appearance="fill">
+                                            <mat-label>Јединица мере</mat-label>
+                                            <input name="jedinica_mere" type="text" matInput placeholder="Унесите јединицу мере" 
+                                            [(ngModel)]="jedinica_mere" required #greskaJed="ngModel">
+                                            <mat-error *ngIf="greskaJed.invalid">
+                                                Морате попунити поље
+                                            </mat-error>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                
+                                    </form>
+                                    <form>
+                                            
+                                        <mat-list-item class="prostorDole">
+                                            <mat-form-field appearance="fill">
+                                            <mat-label>Пореска стопа</mat-label>
+                                            <input name="poreska_stopa" type="text" matInput placeholder="Унесите пореску стопу" 
+                                            [(ngModel)]="poreska_stopa" required #greskaPor="ngModel">
+                                            <mat-error *ngIf="greskaPor.invalid">
+                                                Морате попунити поље
+                                            </mat-error>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                        
+                                    </form>
+                                    <form>
+                                        <mat-list-item class="prostorDole">
+                                            <div class="rowDivItem">
+                                                <button type="button" mat-raised-button (click)="fileInput.click()">Изабрати лого</button>
+                                                <input accept=".png,.jpg,.jpeg" hidden  (change)="onFileSelected()" #fileInput type="file" id="file">
+                                                <div *ngIf="logo != ''">
+                                                    <mat-icon aria-hidden="false" class="primary">check</mat-icon>
+                                                </div>   
+                                            </div>
+                                            
+                                                                                      
+                                        </mat-list-item>
+                                    </form>
+                                    <mat-list-item>
+                                        <div *ngIf="korisnik_ugostitelj()" class="rowDiv">
+                                        <mat-label>Тип производа: </mat-label>
+                                    
+                                            <mat-radio-group  aria-label="Select an option" [(ngModel)]="tip">
+                                                <div class="radioDiv">
+                                                    <mat-radio-button value="hrana">Храна</mat-radio-button>
+                                                    <mat-radio-button value="pice">Пиће</mat-radio-button>
+                                                    <mat-radio-button value="sirovina">Сировина</mat-radio-button>
+                                                </div>
+                                            </mat-radio-group>
+                                  
+                                    </div>
+                                    </mat-list-item>
+                                </mat-list>
+                            </div>
+                            <div class="colDiv">
+                                <mat-label>Допунски подаци</mat-label>
+                                <div class="rowDiv2">
+                                    <div class="divInList2">
+                                        
+                                        <mat-list>
+                                            <form>
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Земља порекла</mat-label>
+                                                    <input name="poreklo" type="text" matInput placeholder="Унесите земљу порекла" 
+                                                    [(ngModel)]="poreklo" required #greskaPoreklo="ngModel">
+                                                    <mat-error *ngIf="greskaPoreklo.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                            </form>
+                                            <form> 
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Страни назив</mat-label>
+                                                    <input name="strani_naziv" type="text" matInput placeholder="Унесите страни назив" 
+                                                    [(ngModel)]="strani_naziv" required #greskaStrani_naziv="ngModel">
+                                                    <mat-error *ngIf="greskaStrani_naziv.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                            </form>
+                                            <form>
+                                                
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Баркод број</mat-label>
+                                                    <input name="bar_kod" type="text" matInput placeholder="Унесите баркод" 
+                                                    [(ngModel)]="bar_kod" required #greskaBar="ngModel">
+                                                    <mat-error *ngIf="greskaBar.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            <form>
+                                                    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Произвођач</mat-label>
+                                                    <input name="proizvodjac" type="text" matInput placeholder="Унесите произвођача" 
+                                                    [(ngModel)]="proizvodjac" required #greskaProizvodjac="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaProizvodjac.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            <form>
+                                                    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Царинска тарифа</mat-label>
+                                                    <input name="carinska_tarifa" type="text" matInput placeholder="Царинска тарифа" 
+                                                    [(ngModel)]="carinska_tarifa" required #greskaCarina="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaCarina.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            
+                                        </mat-list>
+                                    </div>
+                                    <div class="divInList2">
+                                        
+                                        <mat-list>
+                                            <form>
+                                                    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Минималне залихе(предузеће)</mat-label>
+                                                    <input name="min_zaliheP" type="text" matInput placeholder="Унесите количину" 
+                                                    [(ngModel)]="min_zaliheP" required #greskaMin_zalihePc="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaMin_zalihePc.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            <form>
+                                                    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Максималне залихе(предузеће)</mat-label>
+                                                    <input name="max_zaliheP" type="text" matInput placeholder="Унесите цифру" 
+                                                    [(ngModel)]="max_zaliheP" required #greskaMax_zaliheP="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaMax_zaliheP.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            <form>
+                                                    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Опис</mat-label>
+                                                    <input name="opis" type="text" matInput placeholder="Унесите опис" 
+                                                    [(ngModel)]="opis" required #greskaOpis="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaOpis.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                        
+                                            </form>
+                                            <form>    
+                                                <mat-list-item class="prostorDole">
+                                                    <mat-form-field appearance="fill">
+                                                    <mat-label>Декларација</mat-label>
+                                                    <input name="deklaracija" type="text" matInput placeholder="Унесите декларацију" 
+                                                    [(ngModel)]="deklaracija" required #greskaDeklaracija="ngModel">
+                                                    
+                                                    <mat-error *ngIf="greskaDeklaracija.invalid">
+                                                        Морате попунити поље
+                                                    </mat-error>
+                                                    </mat-form-field>
+                                                </mat-list-item>
+                                            </form>
+                                            <form>   
+                                                <mat-list-item>
+                                                    <div class="rowDiv">
+                                                    <mat-label>Акцизе: </mat-label>
+                                                        <mat-radio-group  aria-label="Select an option" [(ngModel)]="akcize">
+                                                            <div class="radioDiv">
+                                                                <mat-radio-button value="true">Не</mat-radio-button>
+                                                                <mat-radio-button value="false">Да</mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                </div>
+                                                </mat-list-item>
+                                            </form>
+                                            
+                                            <form>  
+                                                <mat-list-item class="prostorGore">
+                                                    <div class="rowDiv">
+                                                    <mat-label>Еко такса: </mat-label>
+                                                        <mat-radio-group  aria-label="Select an option" [(ngModel)]="eko_taksa">
+                                                            <div class="radioDiv">
+                                                                <mat-radio-button value="храна">Да</mat-radio-button>
+                                                                <mat-radio-button value="пиће">Не</mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                </div>
+                                                </mat-list-item>
+                                            </form>
+                                        </mat-list>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="unosDiv2">
+                            <div class="divInList2">
+                                <div class="labelaPodaci">
+                                    <mat-label>Робе и услуге</mat-label>
+                                </div>
+                                <div class="tabelaDiv">
+                                    <form>
+                                        <table mat-table [dataSource]="dataSource2" *ngIf="dataSource2" class="mat-elevation-z8">                      
+                            
+                                            <ng-container matColumnDef="sifra1">
+                                            <th *matHeaderCellDef>Назив</th>
+                                            <td *matCellDef="let element">
+                                                <div class="centerItem1">
+                                                    {{element.naziv_objekta}}
+                                                </div></td>
+                                            </ng-container>
+                                        
+                                            
+                                            <ng-container matColumnDef="naziv1">
+                                                <th *matHeaderCellDef>Набавна цена</th>
+                                                <td *matCellDef="let element">
+                                                    <div class="centerItem1">
+                                                        <div class="divField">
+                                                            <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                <mat-label>Набавна</mat-label>
+                                                                <input name="nabavna" type="number" matInput placeholder="Унесите цену" 
+                                                                [(ngModel)]="element.nabavna_cena">
+                                                                
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+                                        
+                                        
+                                            <ng-container matColumnDef="jedinica_mere1">
+                                                <th  *matHeaderCellDef>Продајна цена</th>
+                                                <td  *matCellDef="let element"> 
+                                                    <div class="centerItem1">
+                                                        <div class="divField">
+                                                            <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                <mat-label>Продајна</mat-label>
+                                                                <input name="prodajna" type="number" matInput placeholder="Унесите цену" 
+                                                                [(ngModel)]="element.prodajna_cena" >
+                                                                
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+                                        
+                                        
+                                            <ng-container matColumnDef="poreska_stopa1">
+                                            <th  *matHeaderCellDef>Лагер</th>
+                                            <td  *matCellDef="let element"> 
+                                                <div class="centerItem1">
+                                                    <div class="divField">
+                                                        <mat-form-field appearance="fill" [style.width.px]=100>
+                                                            <mat-label>Лагер</mat-label>
+                                                            <input name="lager" type="number" matInput placeholder="Унесите количину" 
+                                                            [(ngModel)]="element.lager" >
+                                                            
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            </ng-container>
+                                        
+                                            <ng-container matColumnDef="proizvodjac1">
+                                                <th  *matHeaderCellDef>Мин. количина</th>
+                                                <td  *matCellDef="let element"> 
+                                                    <div class="centerItem1">
+                                                        <div class="divField">
+                                                            <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                <mat-label>Количина</mat-label>
+                                                                <input name="min_kol" type="number" matInput placeholder="Унесите количину" 
+                                                                [(ngModel)]="element.min_kolicina" >
+                                                            
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="a">
+                                                <th  *matHeaderCellDef>Макс. количина</th>
+                                                <td  *matCellDef="let element"> 
+                                                    <div class="centerItem1">
+                                                        <div class="divField">
+                                                            <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                <mat-label>Количина</mat-label>
+                                                                <input name="element.naziv_objekta" type="number" matInput placeholder="Унесите количину" 
+                                                                [(ngModel)]="element.max_kolicina">
+                                                                
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="b">
+                                                <th  *matHeaderCellDef>Додај артикал</th>
+                                                <td  *matCellDef="let element"> 
+                                                    
+                                                        <div class="centerItem1">
+                                                            <div class="divField">
+                                                                <button mat-button *ngIf="novi_artikli.length > 0" [style.width.px]=100
+                                                                    (click)="dodaj(element)">
+                                                                    Додај
+                                                                </button>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                                    
+                                                </td>
+                                            </ng-container>
+                    
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns2;">
+                                                
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="expansion_izmena">
+                        <mat-expansion-panel-header class="centerItem">
+                        <mat-panel-title >
+                            Измена артикала
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="expansion_izmena">
+                            <div class="unosDiv1">
+                                <div class="divInList">
+                                    <div class="labelaPodaci">
+                                        <mat-label>Oпшти подаци</mat-label>
+                                    </div>
+                                    <mat-list>
+                                        <form>
+                                            <mat-list-item class="prostorDole">
+                                                <mat-form-field appearance="fill">
+                                                <mat-label>Шифра</mat-label>
+                                                <input name="sifra_izmena" type="number" matInput placeholder="Унесите шифру производа" 
+                                                [(ngModel)]="sifra_izmena" required #greskaSifra_izmena="ngModel">
+                                                <mat-error *ngIf="greskaSifra_izmena.invalid">
+                                                    Морате попунити поље
+                                                </mat-error>
+                                                </mat-form-field>
+                                            </mat-list-item>
+                                        </form>
+                                        <form>
+                                            <mat-list-item class="prostorDole">
+                                                <button mat-flat-button (click)="pretrazi_artikal()">Претражи</button>
+                                            </mat-list-item>
+                                        </form>
+                                        
+                                        <form> 
+                                            <mat-list-item class="prostorDole">
+                                                <mat-form-field appearance="fill">
+                                                <mat-label>Назив</mat-label>
+                                                <input name="naziv_izmena" type="text" matInput placeholder="Унесите назив производа" 
+                                                [(ngModel)]="naziv_izmena" required #greskaNaziv_izmena="ngModel">
+                                                <mat-error *ngIf="greskaNaziv_izmena.invalid">
+                                                    Морате попунити поље
+                                                </mat-error>
+                                                </mat-form-field>
+                                            </mat-list-item>
+                                        </form>
+                                        <form>
+                                            <mat-list-item class="prostorDole">
+                                                <mat-form-field appearance="fill">
+                                                <mat-label>Јединица мере</mat-label>
+                                                <input name="jedinica_mere_izmena" type="text" matInput placeholder="Унесите јединицу мере" 
+                                                [(ngModel)]="jedinica_mere_izmena" required #greskaJed_izmena="ngModel">
+                                                <mat-error *ngIf="greskaJed_izmena.invalid">
+                                                    Морате попунити поље
+                                                </mat-error>
+                                                </mat-form-field>
+                                            </mat-list-item>
+                                        </form>
+                                        <form>
+                                                
+                                            <mat-list-item class="prostorDole">
+                                                <mat-form-field appearance="fill">
+                                                <mat-label>Пореска стопа</mat-label>
+                                                <input name="poreska_stopa_izmena" type="text" matInput placeholder="Унесите пореску стопу" 
+                                                [(ngModel)]="poreska_stopa_izmena" required #greskaPor_izmena="ngModel">
+                                                <mat-error *ngIf="greskaPor_izmena.invalid">
+                                                    Морате попунити поље
+                                                </mat-error>
+                                                </mat-form-field>
+                                            </mat-list-item>
+                                            
+                                        </form>
+                                        <form>
+                                            <mat-list-item class="prostorDole">
+                                                <div class="rowDivItem">
+                                                    <button type="button" mat-raised-button (click)="fileInput.click()">Изабрати лого</button>
+                                                    <input accept=".png,.jpg,.jpeg" hidden  (change)="onFileSelected_izmena()" #fileInput type="file" id="file">
+                                                    <div *ngIf="logo != ''">
+                                                        <mat-icon aria-hidden="false" class="primary">check</mat-icon>
+                                                    </div>   
+                                                </div>
+                                                
+                                                                                        
+                                            </mat-list-item>
+                                        </form>
+                                        <mat-list-item>
+                                            <div *ngIf="korisnik_ugostitelj()" class="rowDiv">
+                                            <mat-label>Тип производа: </mat-label>
+                                        
+                                                <mat-radio-group  aria-label="Select an option" [(ngModel)]="tip_izmena">
+                                                    <div class="radioDiv">
+                                                        <mat-radio-button value="hrana">Храна</mat-radio-button>
+                                                        <mat-radio-button value="pice">Пиће</mat-radio-button>
+                                                        <mat-radio-button value="sirovina">Сировина</mat-radio-button>
+                                                    </div>
+                                                </mat-radio-group>
+                                    
+                                        </div>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                                <div class="colDiv">
+                                    <mat-label>Допунски подаци</mat-label>
+                                    <div class="rowDiv2">
+                                        <div class="divInList2">
+                                            
+                                            <mat-list>
+                                                <form>
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Земља порекла</mat-label>
+                                                        <input name="poreklo_izmena" type="text" matInput placeholder="Унесите земљу порекла" 
+                                                        [(ngModel)]="poreklo_izmena" required #greskaPoreklo_izmena="ngModel">
+                                                        <mat-error *ngIf="greskaPoreklo_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form> 
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Страни назив</mat-label>
+                                                        <input name="strani_naziv_izmena" type="text" matInput placeholder="Унесите страни назив" 
+                                                        [(ngModel)]="strani_naziv_izmena" required #greskaStrani_naziv_izmena="ngModel">
+                                                        <mat-error *ngIf="greskaStrani_naziv_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form>
+                                                    
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Баркод број</mat-label>
+                                                        <input name="bar_kod_izmena" type="text" matInput placeholder="Унесите баркод" 
+                                                        [(ngModel)]="bar_kod_izmena" required #greskaBar_izmena="ngModel">
+                                                        <mat-error *ngIf="greskaBar_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Произвођач</mat-label>
+                                                        <input name="proizvodjac_izmena" type="text" matInput placeholder="Унесите произвођача" 
+                                                        [(ngModel)]="proizvodjac_izmena" required #greskaProizvodjac_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaProizvodjac_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Царинска тарифа</mat-label>
+                                                        <input name="carinska_tarifa_izmena" type="text" matInput placeholder="Царинска тарифа" 
+                                                        [(ngModel)]="carinska_tarifa_izmena" required #greskaCarina_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaCarina_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                
+                                            </mat-list>
+                                        </div>
+                                        <div class="divInList2">
+                                            
+                                            <mat-list>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Минималне залихе(предузеће)</mat-label>
+                                                        <input name="min_zaliheP_izmena" type="text" matInput placeholder="Унесите количину" 
+                                                        [(ngModel)]="min_zaliheP_izmena" required #greskaMin_zalihePc_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaMin_zalihePc_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Максималне залихе(предузеће)</mat-label>
+                                                        <input name="max_zaliheP_izmena" type="text" matInput placeholder="Унесите цифру" 
+                                                        [(ngModel)]="max_zaliheP_izmena" required #greskaMax_zaliheP_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaMax_zaliheP_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Опис</mat-label>
+                                                        <input name="opis_izmena" type="text" matInput placeholder="Унесите опис" 
+                                                        [(ngModel)]="opis_izmena" required #greskaOpis_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaOpis_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>    
+                                                    <mat-list-item class="prostorDole">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Декларација</mat-label>
+                                                        <input name="deklaracija_izmena" type="text" matInput placeholder="Унесите декларацију" 
+                                                        [(ngModel)]="deklaracija_izmena" required #greskaDeklaracija_izmena="ngModel">
+                                                        
+                                                        <mat-error *ngIf="greskaDeklaracija_izmena.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form>   
+                                                    <mat-list-item>
+                                                        <div class="rowDiv">
+                                                        <mat-label>Акцизе: </mat-label>
+                                                            <mat-radio-group  aria-label="Select an option" [(ngModel)]="akcize_izmena">
+                                                                <div class="radioDiv">
+                                                                    <mat-radio-button value="true">Не</mat-radio-button>
+                                                                    <mat-radio-button value="false">Да</mat-radio-button>
+                                                                </div>
+                                                            </mat-radio-group>
+                                                    </div>
+                                                    </mat-list-item>
+                                                </form>
+                                                
+                                                <form>  
+                                                    <mat-list-item class="prostorGore">
+                                                        <div class="rowDiv">
+                                                        <mat-label>Еко такса: </mat-label>
+                                                            <mat-radio-group  aria-label="Select an option" [(ngModel)]="eko_taksa_izmena">
+                                                                <div class="radioDiv">
+                                                                    <mat-radio-button value="храна">Да</mat-radio-button>
+                                                                    <mat-radio-button value="пиће">Не</mat-radio-button>
+                                                                </div>
+                                                            </mat-radio-group>
+                                                    </div>
+                                                    </mat-list-item>
+                                                </form>
+                                            </mat-list>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="centerItem">
+                                <button mat-flat-button class="sirokoDugme" (click)="izmeni_artikal()">Запамти измене</button>
+                            </div>
+                            <div class="unosDiv2">
+                                <div class="divInList2">
+                                    <div class="labelaPodaci">
+                                        <mat-label>Робе и услуге</mat-label>
+                                    </div>
+                                    <div class="tabelaDiv">
+                                       
+                                            <table mat-table [dataSource]="dataSource3" *ngIf="dataSource3" class="mat-elevation-z8">                      
+                                
+                                                <ng-container matColumnDef="nazivO">
+                                                <th *matHeaderCellDef>Назив</th>
+                                                <td *matCellDef="let element">
+                                                    <div class="centerItem1">
+                                                        {{element.naziv_objekta}}
+                                                    </div></td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="sifra">
+                                                    <th *matHeaderCellDef>Назив</th>
+                                                    <td *matCellDef="let element">
+                                                        <div class="centerItem1">
+                                                            {{element.sifra}}
+                                                        </div></td>
+                                                    </ng-container>
+                                            
+                                                
+                                                <ng-container matColumnDef="nabavna">
+                                                    <th *matHeaderCellDef>Набавна цена</th>
+                                                    <td *matCellDef="let element">
+                                                        <div class="centerItem1">
+                                                            <div class="divField">
+                                                                <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                    <mat-label>Набавна</mat-label>
+                                                                    <input name="element.sifra + 'n'" type="number" matInput placeholder="Унесите цену" 
+                                                                    [(ngModel)]="element.nabavna_cena">
+                                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            
+                                            
+                                                <ng-container matColumnDef="prodajna">
+                                                    <th  *matHeaderCellDef>Продајна цена</th>
+                                                    <td  *matCellDef="let element"> 
+                                                        <div class="centerItem1">
+                                                            <div class="divField">
+                                                                <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                    <mat-label>Продајна</mat-label>
+                                                                    <input name="element.sifra + 'p'" type="number" matInput placeholder="Унесите цену" 
+                                                                    [(ngModel)]="element.prodajna_cena" >
+                                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            
+                                            
+                                                <ng-container matColumnDef="lager">
+                                                <th  *matHeaderCellDef>Лагер</th>
+                                                <td  *matCellDef="let element"> 
+                                                    <div class="centerItem1">
+                                                        <div class="divField">
+                                                            <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                <mat-label>Лагер</mat-label>
+                                                                <input name="lag" type="number" matInput placeholder="Унесите количину" 
+                                                                [(ngModel)]="element.lager" >
+                                                                
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                </ng-container>
+                                            
+                                                <ng-container matColumnDef="min_kolicina">
+                                                    <th  *matHeaderCellDef>Мин. количина</th>
+                                                    <td  *matCellDef="let element"> 
+                                                        <div class="centerItem1">
+                                                            <div class="divField">
+                                                                <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                    <mat-label>Количина</mat-label>
+                                                                    <input name="element.sifra + 'min'" type="number" matInput placeholder="Унесите количину" 
+                                                                    [(ngModel)]="element.min_kolicina" >
+                                                                
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="maks_kolicina">
+                                                    <th  *matHeaderCellDef>Макс. количина</th>
+                                                    <td  *matCellDef="let element"> 
+                                                        <div class="centerItem1">
+                                                            <div class="divField">
+                                                                <mat-form-field appearance="fill" [style.width.px]=100>
+                                                                    <mat-label>Количина</mat-label>
+                                                                    <input name="element.sifra + 'max'" type="number" matInput placeholder="Унесите количину" 
+                                                                    [(ngModel)]="element.max_kolicina">
+                                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="dodaj">
+                                                    <th  *matHeaderCellDef>Додај артикал</th>
+                                                    <td  *matCellDef="let element"> 
+                                                        
+                                                            <div class="centerItem1">
+                                                                <div class="divField">
+                                                                    <button name="element.sifra + 'dug'" mat-button *ngIf="artikli_objekata.length > 0" [style.width.px]=100
+                                                                        (click)="izmeni_artikal_objekat(element)">
+                                                                        Измени
+                                                                    </button>
+                                                                        
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    </td>
+                                                </ng-container>
+                        
+                                                <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns3;">
+                                                    
+                                                </tr>
+                                            </table>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="expansion_izmena">
+                        <mat-expansion-panel-header class="centerItem">
+                        <mat-panel-title >
+                            Брисање артикала
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="expansion_izmena1">
+                            <div class="columnDiv">
+                                <div class="divInList">
+                                    <div class="labelaPodaci">
+                                        <mat-label>Унети шифру артикла који се брише</mat-label>
+                                    </div>
+                                    <mat-list>
+                                        <form>
+                                            <mat-list-item class="prostorDole">
+                                                <mat-form-field appearance="fill">
+                                                <mat-label>Шифра</mat-label>
+                                                <input name="sifra_brisanje" type="number" matInput placeholder="Унесите шифру производа" 
+                                                [(ngModel)]="sifra_brisanje" required #greskaSifra_brisanje="ngModel">
+                                                <mat-error *ngIf="greskaSifra_brisanje.invalid">
+                                                    Морате попунити поље
+                                                </mat-error>
+                                                </mat-form-field>
+                                            </mat-list-item>
+                                        </form>
+                                    </mat-list>
+                                </div>
+                              
+                                <div class="columnDivDugme" *ngIf="!greskaSifra_brisanje.invalid">
+                                    <button mat-flat-button class="sirokoDugme" (click)="obrisi_artikal()">Обриши артикал</button>
+                                </div>
+                                <div class="columnDivDugme" *ngIf="greskaSifra_brisanje.invalid">
+                                    <button mat-flat-button class="sirokoDugme" disabled (click)="obrisi_artikal()">Обриши артикал</button>
+                                </div>
+                                
+                            </div>
+                           
+                           
+                        </div>
+                    </mat-expansion-panel>
+                 
+                </mat-card-content>
+
+            </mat-card>
+        </div>
+     
+        <script src="" async defer></script>
+    </body>
+</html>

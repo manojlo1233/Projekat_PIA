@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <mat-toolbar color="primary">
+            <span>
+                Предузеће
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button type="submit" (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+           
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a>  
+            <a mat-button (click)="predji_na_pregled_izvestaja()">Преглед извештаја</a>
+            <a mat-button (click)="predji_na_izdavanje_racuna()">Издаванје рачуна</a> 
+            <a mat-button *ngIf="proveri_korisnika()" (click)="predji_na_stolove()">Распоред столова</a>
+            <a mat-button class="selected" (click)="predji_na_raspored()">Распоред артикала</a>
+            <a mat-button (click)="predji_na_robe_i_usluge()">Робе и услуге</a>
+            <a mat-button (click)="predji_na_narucioce()">Наручиоци</a>
+            <a mat-button (click)="predji_na_podatke()">Подаци о предузећу</a>
+        </mat-toolbar>
+
+        
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Распоред артикала
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <div class="columnDiv">
+                        
+                            <form id="kat_form" class="rowDiv">
+                                <mat-label>Унесите категорију: </mat-label>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Категорија</mat-label>
+                                    <input name="kategorija" type="text" matInput placeholder="Унесите категорију" 
+                                    [(ngModel)]="kategorija" required #greskaKategorija="ngModel">
+                                    <mat-error *ngIf="greskaKategorija.invalid">
+                                        Морате попунити поље
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-label>Унесите поткатегорију: </mat-label>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Поткатегорија</mat-label>
+                                    <input name="potkategorija" type="text" matInput placeholder="Унесите поткатегорију" 
+                                    [(ngModel)]="potkategorija" required #greskaPotkategorija="ngModel">
+                                    <mat-error *ngIf="greskaPotkategorija.invalid">
+                                        Морате попунити поље
+                                    </mat-error>
+                                </mat-form-field>
+                                <div *ngIf="!greskaKategorija.invalid, else dozvoli">
+                                    <button mat-flat-button type="submit" (click)="unesi()" class="dugmeVisina">Унеси</button>
+                                </div>
+                                <ng-template #dozvoli>
+                                    <button mat-flat-button (click)="unesi()" disabled class="dugmeVisina">Унеси</button>
+                                </ng-template>
+                                
+                                
+                            </form>
+                            <div class="divOutList" >
+                                <mat-label>Категорије и поткатегорије:</mat-label>
+                                <div *ngFor="let k of sve_kategorije" class="divInList3">
+                                    <div class="divInList2">
+                                        <mat-label>Категорија: </mat-label>
+                                        <mat-label>{{k.kategorija}}</mat-label>
+                                        <button mat-flat-button (click)="dodajKat(k)" class="podatak3Desno">Додај артикал</button>
+                                    </div>
+                                    <mat-list *ngFor="let p of k.potkategorije">
+                                        <mat-list-item>
+                                            <div class="divInList2">
+                                                <mat-label>Поткатегорија:</mat-label>
+                                                <mat-label>{{p.potkategorija}}</mat-label>
+                                                <button mat-flat-button (click)="dodajPot(k,p)" class="podatak3Desno">Додај артикал</button>
+                                            </div>
+                                            
+                                        </mat-list-item>
+                                    </mat-list>
+
+                                </div>
+                                    
+                            </div>  
+
+                           
+                    </div>
+                    
+                </mat-card-content>
+                
+            </mat-card>
+        </div>
+
+        <div class="popUp" id="popUp">
+            <div class="centerItem1">
+
+                <mat-label>Додај артикал</mat-label>
+                <form class="rowDiv" id="formPretraga">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Претрага</mat-label>
+                        <input name="pretraga" type="text" matInput placeholder="Унесите назив артикла" 
+                        [(ngModel)]="pretraga" (input)="onSearchChange($event)" required #greskaPretraga="ngModel">
+                        <mat-error *ngIf="greskaPretraga.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                    </mat-form-field>
+                    
+                </form>
+                
+                
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">                      
+                        
+                    <ng-container matColumnDef="sifra">
+                    <th *matHeaderCellDef> Sifra</th>
+                    <td *matCellDef="let element"><div class="centerItem">
+                        {{element.sifra}}
+                    </div></td>
+                    </ng-container>
+                
+                    
+                    <ng-container matColumnDef="naziv">
+                        <th *matHeaderCellDef>Naziv</th>
+                        <td *matCellDef="let element">
+                            <div class="centerItem">
+                                {{element.naziv}}
+                            </div>
+                        </td>
+                    </ng-container>
+                
+                
+                    <ng-container matColumnDef="jedinica_mere">
+                        <th  *matHeaderCellDef>Jedinica mere</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                {{element.jedinica_mere}}
+                            </div>
+                        </td>
+                    </ng-container>
+                
+                
+                    <ng-container matColumnDef="poreska_stopa">
+                    <th  *matHeaderCellDef>Poreska stopa</th>
+                    <td  *matCellDef="let element"> 
+                        <div class="centerItem">
+                            {{element.poreska_stopa}}
+                        </div>  
+                    </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="proizvodjac">
+                        <th  *matHeaderCellDef>Proizvodjac</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                {{element.dopunski_podaci.proizvodjac}}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dodaj">
+                        <th  *matHeaderCellDef>Додај</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                <button mat-flat-button (click)="dodaj_artikal(element.sifra)" class="dugmeTabela">Додај</button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                        
+                    </tr>
+                </table>
+                <div class="centerItem3">
+                    <button mat-flat-button (click)="close_popUp()">Затвори</button>
+                </div>
+                
+            </div>
+            
+          
+        </div>
+           
+       
+        <script src="" async defer></script>
+    </body>
+</html>

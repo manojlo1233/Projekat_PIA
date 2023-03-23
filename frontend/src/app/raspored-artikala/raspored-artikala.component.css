@@ -1,0 +1,158 @@
+.spacer{
+    flex: 1 1 auto;
+}
+.centerItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.podaci{
+    height: max-content;
+    width: 65%;
+    background-color: rgb(195, 197, 250);
+    flex-direction: column;
+    display: flex;
+    margin-top: 30px;
+   
+}
+.cardContent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+.rowDiv{
+    
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+}
+.dugmeVisina{
+    height: fit-content;
+    width: fit-content;
+}
+.divOutList{
+    background-color: rgb(215, 216, 248);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+    gap: 10px;
+    height: fit-content;
+    padding-right: 40px;
+}
+.columnDiv{
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.divInList{
+    background-color: rgb(238, 238, 248);
+    padding: 20px;
+    flex-direction: column;
+    display: flex;
+}
+
+.divInList2{
+    background-color:rgb(238, 238, 248);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    font-size: 16px;
+   
+}
+.itemDiv{
+    background-color:rgb(238, 238, 248);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    padding: 10px;
+}
+.divInList3{
+    background-color:rgb(238, 238, 248);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+.podatak3Desno{
+    margin-left: auto;
+    order: 3;
+}
+.popUp{
+    background-color: rgb(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+  
+}
+.open-popUp{
+    visibility: visible;
+}
+
+.centerItem1{
+    background-color: rgb(195, 197, 250);
+    display: flex;
+    flex-direction: column;
+    
+    margin-top: 200px;
+    height: fit-content;
+    width: 60%;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 15px;
+}
+table{
+    width: 100%;
+}
+.dugmeTabela{
+    background-color: rgb(195, 197, 250);
+}
+.dugme{
+    height: fit-content;
+    width: fit-content;
+}
+.centerItem3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+td{
+    border-top: 1px solid rgb(138, 137, 137); 
+}
+.spaceHorizontal{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 20px;
+}
+body { /* This is the CSS for body */
+    position: relative;
+    min-width: fit-content;
+    height: 100%; /* Height set to 100% means the body will extend from the top of the window to the bottom */
+    max-height: 100%; /* Maximum height is limited to 100% */
+    line-height: 1.5em; /* Line spacing is set to 1.5em */
+    background-color: rgb(33, 30, 47);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.selected{
+    background-color: rgb(60, 60, 112);
+}
