@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <mat-toolbar color="primary">
+            <span>
+                Администратор
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+            </div>
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pregled_preduzeca()">Преглед предузећа</a>  
+            <a mat-button (click)="predji_na_registraciju()">Регистрација корисника</a>
+            <a mat-button (click)="predji_na_dnevne_izvestaje()">Преглед дневних извештаја</a>
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Издавање рачуна
+                <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">                      
+                                        
+                        <ng-container matColumnDef="ime">
+                        <th *matHeaderCellDef>Име власника</th>
+                        <td *matCellDef="let element"><div class="centerItem">
+                            {{element.ime}}
+                        </div></td>
+                        </ng-container>
+                    
+                        
+                        <ng-container matColumnDef="prezime">
+                            <th *matHeaderCellDef>Презиме власника</th>
+                            <td *matCellDef="let element">
+                                <div class="centerItem">
+                                    {{element.prezime}}
+                                </div>
+                            </td>
+                        </ng-container>
+                    
+                    
+                        <ng-container matColumnDef="kor_ime">
+                            <th  *matHeaderCellDef>Коисничко име</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.kor_ime}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="lozinka">
+                            <th  *matHeaderCellDef>Лозинка</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.lozinka}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="prihavceno">
+                            <th  *matHeaderCellDef>Статус</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem" *ngIf="element.prihvaceno">
+                                    <mat-label>Активирано</mat-label>
+                                </div>
+                                <div class="centerItem" *ngIf="!element.prihvaceno">
+                                    <mat-label>Деактивирано</mat-label>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dugmeP">
+                        <th  *matHeaderCellDef>Промена статуса</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                <div *ngIf="!element.prihvaceno">
+                                    <button mat-flat-button class="dugmeTabela" (click)="prihvati_preduzece(element.kor_ime)">Активирај</button>
+                                </div>
+                               <div *ngIf="element.prihvaceno">
+                                <button mat-flat-button class="dugmeTabela" (click)="deaktiviraj_preduzece(element.kor_ime)">Деактивирај</button>
+                               </div>
+                            </div>  
+                        </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dugmeD">
+                            <th  *matHeaderCellDef>Детаљи</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                        <button mat-flat-button class="dugmeTabela" (click)="open_popUp(element.kor_ime)">Детаљи</button>
+                                </div>  
+                            </td>
+                        </ng-container>
+                    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                            
+                        </tr>
+                    </table>
+                </mat-card-content>
+                </mat-card>
+            </div>
+              
+
+            <div class="popUp" id="popUp">
+                <div class="centerItem1">
+                    <h3 mat-header>Подаци предузећа</h3>
+                    <div class="rowDivNoColor">
+                        <div class="centerItem2">
+                            <div class="rowDiv">
+                                <mat-label header>Телефон: </mat-label>
+                                <mat-label header>{{prikazano_preduzece.telefon}} </mat-label>
+                            </div>
+                            <div class="rowDiv">
+                                <mat-label header>Mejl: </mat-label>
+                                <mat-label header>{{prikazano_preduzece.e_mail}} </mat-label>
+                            </div>
+                            
+                            <div class="rowDiv">
+                                <mat-list>
+                                    <h3 mat-header>Адреса</h3>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Држава: </mat-label>
+                                            <mat-label header>{{prikazano_preduzece.adresa.drzava}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Град: </mat-label>
+                                            <mat-label header>{{prikazano_preduzece.adresa.grad}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Поштански број: </mat-label>
+                                            <mat-label header>{{prikazano_preduzece.adresa.postanski_broj}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Улица и број: </mat-label>
+                                            <mat-label header>{{prikazano_preduzece.adresa.ulica_broj}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+        
+                                </mat-list>
+                            </div>
+                        </div>
+                        <div class="centerItem2">
+                        
+                            <div class="rowDiv">
+                                <mat-label header>ПИБ: </mat-label>
+                                <mat-label header>{{prikazano_preduzece.PIB}} </mat-label>
+                            </div>
+                            <div class="rowDiv">
+                                <mat-label header>Матични број: </mat-label>
+                                <mat-label header>{{prikazano_preduzece.maticni_broj}} </mat-label>
+                            </div>
+                            <div class="rowDiv">
+                                <mat-label header>Лого: </mat-label>
+                                <img src="{{prikazano_preduzece.logo}}" height="100px" width="100px">
+                            </div>
+                        </div>
+                        <div class="centerItem2">
+                            
+                            
+                            <div class="columnDiv">
+                              
+                                    <h3 mat-header>Наручиоци</h3>
+                                <mat-divider></mat-divider>
+                                <mat-list *ngFor="let nar of prikazano_preduzece.narucioci">
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Број дана плаћања: </mat-label>
+                                            <mat-label header>{{nar.broj_dana_placanja}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Проценат рабата: </mat-label>
+                                            <mat-label header>{{nar.procenat_rabata}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <div class="rowDiv">
+                                            <mat-label header>Наручилац:  </mat-label>
+                                            <mat-label header>{{dohv_ime_preduzeca(nar.narucilac)}}</mat-label>
+                                        </div>
+                                    </mat-list-item>
+                                </mat-list>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                    <button mat-flat-button (click)="close_popUp()" >Затвори</button>
+                </div>
+            </div>
+        <script src="" async defer></script>
+    </body>
+</html>

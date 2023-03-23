@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <mat-toolbar color="primary">
+            <span>
+                Администратор
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+            </div>
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pregled_preduzeca()">Преглед предузећа</a>  
+            <a mat-button (click)="predji_na_registraciju()">Регистрација корисника</a>
+            <a mat-button (click)="predji_na_dnevne_izvestaje()">Преглед дневних извештаја</a>
+        </mat-toolbar>
+
+
+       
+                <div class="centerItem">
+                    <mat-card class="podaci">
+                        <mat-card-title>
+                            Издавање рачуна
+                        <mat-divider></mat-divider>
+                        </mat-card-title>
+                        <mat-tab-group mat-align-tabs="start">
+                            <mat-tab label="Унеси предузеће">
+
+                            
+                            <mat-card-content>
+                                <div class="expansionDiv">
+                                        
+                                    <mat-expansion-panel class="expansion1">
+                                        <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Основни подаци
+                                        </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="divInList">
+                                            <mat-list>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Име</mat-label>
+                                                        <input name="ime" type="text" matInput placeholder="Унесите име власника" [(ngModel)]="ime" required #greskaIme="ngModel">
+                                                        <mat-error *ngIf="greskaIme.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form> 
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Презиме</mat-label>
+                                                        <input name="Prezime" type="text" matInput placeholder="Унесите презиме влансика" 
+                                                        [(ngModel)]="prezime" required #greskaPrezime="ngModel">
+                                                        <mat-error *ngIf="greskaPrezime.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form>
+                                                    
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Корисничко име</mat-label>
+                                                        <input name="kor_ime" type="text" matInput placeholder="Унесите корисничко име" 
+                                                        [(ngModel)]="kor_ime" required #greskaKor="ngModel">
+                                                        <mat-error *ngIf="greskaKor.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Лозинка</mat-label>
+                                                        <input name="lozinka" type="text" matInput placeholder="Унесите лозинку" 
+                                                        [(ngModel)]="lozinka" required #greskaLozinka="ngModel"
+                                                        pattern="^[A-Za-z]((?=.*\d)(?=.*[A-Za-z])(?=.*?[#\?!@\$%\^&\*\-\]\[\{\}])).*" minlength="8" maxlength="12">
+                                                        
+                                                        <mat-error *ngIf="greskaLozinka.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaLozinka.errors?.['minlength'] || greskaLozinka.errors?.['maxlength'] ||
+                                                        greskaLozinka.errors?.['pattern']">
+                                                            Potrebno je uneti bar jedno veliko slovo, jedan broj i jedan specijalni karakter,
+                                                            i mora pocinjati slovom
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                            </mat-list>
+                                        </div>
+                                    </mat-expansion-panel>
+                                    
+                                    <mat-expansion-panel class="expansion2">
+                                        <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Контакт и назив
+                                        </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="divInList">
+                                            <mat-list>
+                                                <form>
+                                                
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Назив предузећа</mat-label>
+                                                        <input name="naziv_pred" type="text" matInput placeholder="Унесите назив предузећа" 
+                                                        [(ngModel)]="naziv_pred" required #greskaNaziv="ngModel">
+                                                        <mat-error *ngIf="greskaNaziv.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                
+                                                </form>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>E-mail</mat-label>
+                                                        <input name="mail" type="text" matInput placeholder="Унесите контакт телефон"
+                                                        [(ngModel)]="mail" required #greskaMail="ngModel"
+                                                        pattern="^[a-zA-Z.0-9].*@[a-zA-Z].*\.[a-zA-Z]{1,4}">
+                                                        <mat-error *ngIf="greskaMail.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaMail.errors?.['pattern']">
+                                                            Унети у формату: ex..@mail.com
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item> 
+                                                </form>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Телефон</mat-label>
+                                                        <input name="telefon" type="text" matInput placeholder="Унесите контакт телефон"
+                                                        [(ngModel)]="telefon" required minlength="12" maxlength="14" 
+                                                        pattern="^\+381[0-9]*" #greskaTelefon="ngModel">
+                                                        <mat-error *ngIf="greskaTelefon.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaTelefon.errors?.['minlength']">
+                                                            Минимум 12 карактера
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaTelefon.errors?.['pattern']">
+                                                            Контакт телефон мора почињати са +381
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item> 
+                                                </form>
+                                            </mat-list>
+                                        </div>
+                                    </mat-expansion-panel>
+                        
+                                    <mat-expansion-panel class="expansion3">
+                                        <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Adresa
+                                        </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="divInList">
+                                            <mat-list>
+                                                <form>
+                                                
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Држава</mat-label>
+                                                            <input name="drzava" type="text" matInput placeholder="Унесите државу" 
+                                                            [(ngModel)]="drzava" required #greskaDrzava="ngModel">
+                                                            <mat-error *ngIf="greskaDrzava.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                
+                                                    
+                                                </form>
+                                                <form>
+                                                    
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Град</mat-label>
+                                                            <input name="grad" type="text" matInput placeholder="Унесите град" 
+                                                            [(ngModel)]="grad" required #greskaGrad="ngModel">
+                                                            <mat-error *ngIf="greskaGrad.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                
+                                                </form>
+                                                <form>
+                                                    
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Поштански број</mat-label>
+                                                        <input name="post_broj" type="text" matInput placeholder="Унесите поштански број" 
+                                                        [(ngModel)]="post_broj" required #greskaPost="ngModel">
+                                                        <mat-error *ngIf="greskaPost.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                            
+                                                </form>
+                                                <form>
+                                                        
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Улица и број</mat-label>
+                                                        <input name="ulica_broj" type="text" matInput placeholder="Унесите улицу и број" 
+                                                        [(ngModel)]="ulica_broj" required #greskaUlica="ngModel">
+                                                        <mat-error *ngIf="greskaUlica.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                            </mat-list>
+                                        </div>
+                                    </mat-expansion-panel>
+                        
+                                    <mat-expansion-panel class="expansion4">
+                                        <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            ПИБ и матични број
+                                        </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="divInList">
+                                            <mat-list>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>ПИБ</mat-label>
+                                                        <input name="PIB" type="number" matInput placeholder="Унесите ПИБ" 
+                                                        [(ngModel)]="PIB" required #greskaPIB="ngModel"
+                                                        pattern="[1-9]{1}[0-9]{8}">
+                                                        <mat-error *ngIf="greskaPIB.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaPIB.errors?.['pattern']">
+                                                            Унети деветоцифрени број који не почиње нулом
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <mat-form-field appearance="fill">
+                                                        <mat-label>Матични број</mat-label>
+                                                        <input name="maticni" type="number" matInput placeholder="Унесите матични број" 
+                                                        [(ngModel)]="maticni" required #greskaMaticni="ngModel">
+                                                        <mat-error *ngIf="greskaMaticni.invalid">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        </mat-form-field>
+                                                    </mat-list-item>
+                                                </form>
+                                                <form>
+                                                    <mat-list-item class="podatak">
+                                                        <label></label>
+                                                        <button type="button" mat-raised-button (click)="fileInput.click()">Изабрати лого</button>
+                                                        <input hidden (change)="onFileSelected()" #fileInput type="file" id="file">   
+                                                                                                
+                                                    </mat-list-item>
+                                                </form>
+                                                
+                                            </mat-list>
+                                        </div>
+                                    </mat-expansion-panel>
+                        
+                                    
+                        
+                                </div>
+                                <form>
+                                    <div class="sacuvajNarucioca">
+                                    
+                                            <div *ngIf="!(greskaMaticni.invalid || greskaPIB.invalid || greskaDrzava.invalid || greskaUlica.invalid ||
+                                            greskaPost.invalid || greskaGrad.invalid || greskaNaziv.invalid || greskaTelefon.invalid || 
+                                            greskaMail.invalid || greskaIme.invalid || greskaPrezime.invalid || greskaKor.invalid || 
+                                            greskaLozinka.invalid || logo==''), else omoguci">
+                                                <button mat-flat-button (click)="register()">Унеси предузеће</button>
+                                            </div>
+                                            <ng-template #omoguci>
+                                                <button disabled mat-flat-button>Унеси предузеће</button>
+                                            </ng-template>
+                                        
+                                    </div>
+                                </form>
+                            </mat-card-content>
+                            </mat-tab>
+                    
+
+                            <mat-tab label="Унеси купца">
+                                <mat-card-content>
+                                    <div class="expansionDiv">
+                                        <mat-expansion-panel class="expansion1">
+                                            <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Основни подаци
+                                            </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <div class="divInList">
+                                                <mat-list>
+                                                    <form>
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Име</mat-label>
+                                                            <input name="ime_kupac" type="text" matInput placeholder="Унесите име власника" [(ngModel)]="ime_kupac" required #greskaIme1="ngModel">
+                                                            <mat-error *ngIf="greskaIme1.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                    </form>
+                                                    <form> 
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Презиме</mat-label>
+                                                            <input name="prezime_kupac" type="text" matInput placeholder="Унесите презиме влансика" 
+                                                            [(ngModel)]="prezime_kupac" required #greskaPrezime1="ngModel">
+                                                            <mat-error *ngIf="greskaPrezime1.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                    </form>
+                                                    <form>
+                                                        
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Корисничко име</mat-label>
+                                                            <input name="kor_ime_kupac" type="text" matInput placeholder="Унесите корисничко име" 
+                                                            [(ngModel)]="kor_ime_kupac" required #greskaKor1="ngModel">
+                                                            <mat-error *ngIf="greskaKor1.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                
+                                                    </form>
+                                                    <form>
+                                                            
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Лозинка</mat-label>
+                                                            <input name="lozinka_kupac" type="text" matInput placeholder="Унесите лозинку" 
+                                                            [(ngModel)]="lozinka_kupac" required #greskaLozinka1="ngModel"
+                                                            pattern="^[A-Za-z]((?=.*\d)(?=.*[A-Za-z])(?=.*?[#\?!@\$%\^&\*\-\]\[\{\}])).*" minlength="8" maxlength="12">
+                                                            
+                                                            <mat-error *ngIf="greskaLozinka1.errors?.['required']">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            <mat-error *ngIf="greskaLozinka1.errors?.['minlength'] || greskaLozinka1.errors?.['maxlength'] ||
+                                                            greskaLozinka1.errors?.['pattern']">
+                                                                Potrebno je uneti bar jedno veliko slovo, jedan broj i jedan specijalni karakter,
+                                                                i mora pocinjati slovom
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                
+                                                    </form>
+                                                </mat-list>
+                                            </div>
+                                        </mat-expansion-panel>
+                                        <mat-expansion-panel class="expansion2">
+                                            <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Додатни подаци
+                                            </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <div class="divInList">
+                                                <mat-list>
+                                                    <form>
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                                <mat-label>Телефон</mat-label>
+                                                                <input name="telefon_kupac" type="text" matInput placeholder="Унесите контакт телефон"
+                                                                [(ngModel)]="telefon_kupac" required minlength="12" maxlength="14" 
+                                                                pattern="^\+381[0-9]*" #greskaTelefon1="ngModel">
+                                                                <mat-error *ngIf="greskaTelefon1.errors?.['required']">
+                                                                    Морате попунити поље
+                                                                </mat-error>
+                                                                <mat-error *ngIf="greskaTelefon1.errors?.['pattern']">
+                                                                    Контакт телефон мора почињати са +381
+                                                                </mat-error>
+                                                                <mat-error *ngIf="greskaTelefon1.errors?.['minlength']">
+                                                                    Минимум 12 карактера
+                                                                </mat-error>
+                                                               
+                                                                </mat-form-field>
+                                                        </mat-list-item>
+                                                    </form>
+                                                    <form> 
+                                                        <mat-list-item class="podatak">
+                                                            <mat-form-field appearance="fill">
+                                                            <mat-label>Лична карта</mat-label>
+                                                            <input name="licna_karta" type="number" matInput placeholder="Унесите презиме влансика" 
+                                                            [(ngModel)]="licna_karta" required #greskaLicna="ngModel">
+                                                            <mat-error *ngIf="greskaLicna.invalid">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                            </mat-form-field>
+                                                        </mat-list-item>
+                                                    </form>
+                                                   
+                                                </mat-list>
+                                            </div>
+                                        </mat-expansion-panel>
+
+                                    </div>
+                                    <form>
+                                        <div class="sacuvajNarucioca">
+                                        
+                                                <div *ngIf="!(greskaIme1.invalid || greskaPrezime1.invalid || greskaKor1.invalid || 
+                                                greskaLozinka1.invalid || greskaTelefon1.invalid || greskaLicna.invalid), else omoguciKupac">
+                                                    <button mat-flat-button (click)="register_kupac()">Унеси купца</button>
+                                                </div>
+                                                <ng-template #omoguciKupac>
+                                                    <button disabled mat-flat-button>Унеси купца</button>
+                                                </ng-template>
+                                            
+                                        </div>
+                                    </form>
+                                </mat-card-content>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-card>
+                </div>
+        
+        
+        
+        
+        <script src="" async defer></script>
+    </body>
+</html>

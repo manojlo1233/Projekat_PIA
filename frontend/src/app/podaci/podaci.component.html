@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <mat-toolbar color="primary">
+            <span>
+                Предузеће
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button type="submit" (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+           
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a>
+            <a mat-button (click)="predji_na_pregled_izvestaja()">Преглед извештаја</a>
+            <a mat-button (click)="predji_na_izdavanje_racuna()">Издаванје рачуна</a>   
+            <a mat-button *ngIf="proveri_korisnika()" (click)="predji_na_stolove()">Распоред столова</a>
+            <a mat-button (click)="predji_na_raspored()">Распоред артикала</a>
+            <a mat-button (click)="predji_na_robe_i_usluge()">Робе и услуге</a>
+            <a mat-button (click)="predji_na_narucioce()">Наручиоци</a>
+            <a mat-button class="selected" (click)="predji_na_podatke()">Подаци о предузећу</a>
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Подаци
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-tab-group mat-align-tabs="start">
+                        
+
+                        <mat-tab label="Основни подаци предузећа">
+                           <form>
+                                <div class="divIn">
+                                    <label class="podatak">Kategorija preduzeca: </label>
+
+                                    <div class="podatak" *ngIf="!izmeni_kategoriju, else izmeni_kat_input">
+                                        <label>{{detaljiKat()}}</label>
+                                    </div>
+                                    <ng-template #izmeni_kat_input>
+                                        <mat-form-field class="podatak" appearance="fill">
+                                            <mat-label>Kategorije</mat-label>
+                                            <select name="asd" matNativeControl required [(ngModel)]="nova_kategorija">
+                                              <option value="prodavnica">Prodavnica</option>
+                                              <option value="ugostiteljski_objekat">Ugostiteljski objekat</option>
+                                            </select>
+                                          </mat-form-field>
+                                    </ng-template>
+                                    
+                                    <div class="desno_dugme"  *ngIf="!izmeni_kategoriju, else izmeni_kat_dugme">
+                                        <button  name="izmeniKat" (click)="izmeniKategoriju()" mat-flat-button>
+                                            <label class="dugme_tekst" >Измени</label>    
+                                        </button>
+                                    </div>
+                                    <ng-template #izmeni_kat_dugme>
+                                        <button name="izmeniKat"  (click)="izmeniKategoriju()" class="desno_dugme" mat-flat-button>
+                                            <label for="obrisi" class="dugme_tekst" >Obrisi izmenu</label>
+                                            
+                                        </button>
+                                    </ng-template>
+                                </div>
+                           </form>
+                         
+                            <mat-divider></mat-divider>
+
+                        
+                            <div class="divOutList">
+                                <label class="podatak">Sifre delatnosti: </label>
+                                    
+                                <mat-list *ngFor="let s of sifre_lista">
+                                            <form>
+                                                <div class="divInList" *ngIf="!menjaoSifru(s.broj), else menjao">
+                                                    <mat-list-item >
+                                                        <label class="podatak">Sifra: </label>
+                                                        <label class="podatak">{{s.broj}}</label>
+                                                        <button name="menjaj" class="desno_dugme_lista" (click)="izmeniSifru(s.broj)" mat-flat-button>
+                                                            <label class="dugme_tekst" >Измени</label>
+                                                        </button>     
+                                                    </mat-list-item>
+                                                </div>
+                                                <ng-template #menjao>
+                                                    <div class="divInList">
+                                                        <label class="podatak">Sifra: </label>
+                                                        
+                                                        <mat-form-field class="podatak" appearance="fill">
+                                                            <mat-label>Unesite sifru</mat-label>
+                                                            <input name="nov_broj" type="number" matInput [(ngModel)]="s.nov_broj">
+                                                        </mat-form-field>
+                                                    
+                                                        <button name="obrisiZam" (click)="izmeniSifru(s.broj)" class="desno_dugme_lista" mat-flat-button>
+                                                            <label class="dugme_tekst" >Obrisi izmenu</label>
+                                                        </button>
+                                                    </div>
+                                                </ng-template> 
+                                            </form>
+                                </mat-list>      
+                             </div>
+
+                             <mat-divider></mat-divider>
+
+                             <form>
+                                <div class="divIn">
+                                    <label class="podatak">Preduzece u sistemu PDV : </label>
+
+                                    <div class="podatak" *ngIf="!izmeni_pdv, else izmeni_pdv_input">
+                                        <label>{{detaljiPDV()}}</label>
+                                    </div>
+                                    <ng-template #izmeni_pdv_input>
+                                        <mat-form-field class="podatak" appearance="fill">
+                                            <mat-label>Odaberite opciju</mat-label>
+                                            <select name="novPDV" matNativeControl required [(ngModel)]="nov_pdv">
+                                              <option value="true">Da</option>
+                                              <option value="false">Ne</option>
+                                            </select>
+                                          </mat-form-field>
+                                    </ng-template>
+                                    
+                                    <div class="desno_dugme"  *ngIf="!izmeni_pdv, else izmeni_pdv_dugme">
+                                        <button  name="izmeniPDV" (click)="izmeniPDV()" mat-flat-button>
+                                            <label class="dugme_tekst" >Измени</label>    
+                                        </button>
+                                    </div>
+                                    <ng-template #izmeni_pdv_dugme>
+                                        <button name="izmeniPDV"  (click)="izmeniPDV()" class="desno_dugme" mat-flat-button>
+                                            <label class="dugme_tekst" >Obrisi izmenu</label>
+                                        </button>
+                                    </ng-template>
+                                </div>
+                           </form>
+
+                           <mat-divider></mat-divider>
+
+                        </mat-tab>
+
+
+                        <mat-tab label="Банке и жиро рачуни">    
+                            <div class="divOutList">
+                                <label class="podatak">Ziro racuni: </label>
+                                   
+                                <div class="marginDivLeft" *ngFor="let z of ziro_racuni">
+                                        
+                                    <label class="podatak">Рачун: </label>
+                                    <mat-list>
+                                        <form>
+                                            <div class="divInList2" *ngIf="!proveri_ziro(z)">
+                                                <mat-list-item>
+                                                    <label class="podatak">Број жиро рачуна: </label>
+                                                    <label class="podatak">{{z.broj}}</label>
+                                                    <button class="podatak3Desno" (click)="izmeni_ziro(z)" mat-flat-button>Измени</button>
+                                                </mat-list-item>
+                                                <mat-divider></mat-divider>
+                                                <mat-list-item>
+                                                    <label class="podatak">Банка: </label>
+                                                    <label class="podatak">{{z.banka}}</label>
+                                                </mat-list-item>
+                                            
+                                            </div>
+                                            <div class="divInList2" *ngIf="proveri_ziro(z)">
+                                                
+                                                <div class="divChangeItem">
+                                                    <label class="podatak">Број жиро рачуна: </label>
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Жиро рачун</mat-label>
+                                                        <input name="ziro_racun" type="text" matInput placeholder="Унесите жиро рачун" 
+                                                        [(ngModel)]="z.nov_broj" required #greskaZiro="ngModel"
+                                                        required pattern="^\[\d{3}\]-\[\d{12}\]-\[\d{2}\]">
+                                                        <mat-error *ngIf="greskaZiro.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        <mat-error *ngIf="greskaZiro.errors?.['pattern']">
+                                                            Нисте унели жиро рачун у одговарајућој форми
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <button class="podatak3Desno" mat-flat-button (click)="izmeni_ziro(z)" >Поништи измене</button>
+                                                </div>
+                                                
+                                                <mat-divider></mat-divider>
+                                                
+                                                <div class="divChangeItem">
+                                                    <label class="podatak">Банка: </label>
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Банка</mat-label>
+                                                        <mat-select [(ngModel)]="z.nova_banka" name="banka" required #greskaBanka="ngModel">
+                                                            <mat-option *ngFor="let b of sveBanke" value="{{b.naziv}}">
+                                                                {{b.naziv}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-error *ngIf="greskaBanka.invalid">
+                                                            Морате изабрати банку
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            
+                                            </div>
+                                        </form>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+
+                        <mat-tab label="Магацини и касе">
+                            <div class="divOutList2">
+                                <label class="podatak">Магацини: </label>
+                                <div class="marginDivLeft" *ngFor="let m of magacini">   
+                                    <label class="podatak">Магацин: </label>
+                                        <mat-list>
+                                            <form>
+                                                <div class="divInList2" *ngIf="!proveri_magacin(m)">
+                                                    <mat-list-item>
+                                                        <label class="podatak">Naziv: </label>
+                                                        <label class="podatak">{{m.naziv}}</label>
+                                                        <button class="podatak3Desno" (click)="izmeni_magacin(m)" mat-flat-button>Измени</button>
+                                                    </mat-list-item>
+                                                </div>
+                                                <div class="divInList2" *ngIf="proveri_magacin(m)">
+                                                    <div class="divChangeItem">
+                                                        <label class="podatak">Naziv: </label>
+                                                        <mat-form-field appearance="fill">
+                                                            <mat-label>Назив</mat-label>
+                                                            <input name="mag_naziv" type="text" matInput placeholder="Унесите назив" 
+                                                            [(ngModel)]="m.nov_naziv" required #greskaMag="ngModel">
+                                                            <mat-error *ngIf="greskaMag.errors?.['required']">
+                                                                Морате попунити поље
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                        <button class="podatak3Desno" (click)="izmeni_magacin(m)" mat-flat-button>Поништи</button>
+                                                    </div>
+                                                </div>
+                                                
+                                            </form>
+                                        </mat-list>
+                                </div>
+                                <div class="verticalSpace"></div>
+                                <mat-divider></mat-divider>
+
+                                <label class="podatak">Фискалне касе:</label>
+                                <div class="marginDivLeft" *ngFor="let f of fiskalne_kase">            
+                                     <label class="podatak">Каса: </label>
+                                    <mat-list>
+                                        <form>
+                                            <div class="divInList2" *ngIf="!proveri_kasu(f)">
+                                                <mat-list-item>
+                                                    <label class="podatak">Тип: </label>
+                                                    <label class="podatak">{{f.tip}}</label>
+                                                    <button class="podatak3Desno" mat-flat-button (click)="izmeni_kasu(f)">Измени</button>
+                                                </mat-list-item>
+                                                <mat-divider></mat-divider>
+                                                <mat-list-item>
+                                                    <label class="podatak">Naziv: </label>
+                                                    <label class="podatak">{{f.naziv}}</label>
+                                                    
+                                                </mat-list-item>
+                                            </div>
+                                            <div class="divInList2" *ngIf="proveri_kasu(f)">
+                                                <div class="divChangeItem">
+                                                    <label class="podatak">Тип: </label>
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Тип касе</mat-label>
+                                                        <input name="f.nov_tip" type="text" matInput placeholder="Унесите тип касе" 
+                                                        [(ngModel)]="f.nov_tip" required #greskaTip="ngModel">
+                                                        <mat-error *ngIf="greskaTip.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                    </mat-form-field>
+                                                    <button class="podatak3Desno" mat-flat-button (click)="izmeni_kasu(f)" >Поништи измене</button>
+                                                </div>
+                                                <mat-divider></mat-divider>
+                                                <div class="divChangeItem">
+                                                    <label class="podatak">Назив: </label>
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Назив</mat-label>
+                                                        <input name="f.nov_naziv" type="text" matInput placeholder="Унесите назив" 
+                                                        [(ngModel)]="f.nov_naziv" required #greskaNaziv="ngModel">
+                                                        <mat-error *ngIf="greskaNaziv.errors?.['required']">
+                                                            Морате попунити поље
+                                                        </mat-error>
+                                                        
+                                                    </mat-form-field>
+        
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-list>
+                                </div>
+                            </div> 
+                        </mat-tab>
+
+
+                        <mat-tab label="Подаци о власнику">
+                            <div class="divOutList">
+                                <label class="podatak">Основни подаци: </label>
+                                <div class="marginDivLeft">            
+                                        <mat-list>
+                                            <form>
+                                                <div class="divInList2">
+                                                    <mat-list-item *ngIf="!proveri_ime()">
+                                                        <label class="podatak">Име: </label>
+                                                        <label class="podatak">{{korisnik.ime}}</label>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_ime()">Измени</button>
+                                                    </mat-list-item>
+                                                   
+                                                        <div class="divChangeItem" *ngIf="proveri_ime()">
+                                                            <label class="podatak">Име: </label>
+                                                            <mat-form-field appearance="fill">
+                                                                <mat-label>Име</mat-label>
+                                                                <input name="novo_ime" type="text" matInput placeholder="Унесите име" 
+                                                                [(ngModel)]="novo_ime" required #greskaIme="ngModel">
+                                                                <mat-error *ngIf="greskaIme.errors?.['required']">
+                                                                    Морате попунити поље
+                                                                </mat-error> 
+                                                            </mat-form-field>
+                                                            <button class="podatak3Desno" mat-flat-button (click)="izmeni_ime()" >Поништи измене</button>
+                                                        </div>
+                                                        
+                                                    
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item *ngIf="!proveri_prezime()">
+                                                        <label class="podatak">Презиме: </label>
+                                                        <label class="podatak">{{korisnik.prezime}}</label>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_prezime()">Измени</button>
+                                                    </mat-list-item>
+                                                    <div class="divChangeItem" *ngIf="proveri_prezime()">
+                                                        <label class="podatak">Презиме: </label>
+                                                        <mat-form-field appearance="fill">
+                                                            <mat-label>Презиме</mat-label>
+                                                            <input name="novo_prezime" type="text" matInput placeholder="Унесите презиме" 
+                                                            [(ngModel)]="novo_prezime" required #greskaPrezime="ngModel">
+                                                            <mat-error *ngIf="greskaPrezime.errors?.['required']">
+                                                                Морате попунити поље
+                                                            </mat-error> 
+                                                        </mat-form-field>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_prezime()" >Поништи измене</button>
+                                                    </div>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item *ngIf="!proveri_mail()">
+                                                        <label class="podatak">Е-мејл адреса: </label>
+                                                        <label class="podatak">{{korisnik.e_mail}}</label>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_mail()">Измени</button>
+                                                    </mat-list-item>
+                                                    <div class="divChangeItem" *ngIf="proveri_mail()">
+                                                        <label class="podatak">Е-мејл адреса: </label>
+                                                        <mat-form-field appearance="fill">
+                                                            <mat-label>Мејл</mat-label>
+                                                            <input name="nov_mail" type="text" matInput placeholder="Унесите мејл" 
+                                                            [(ngModel)]="nov_mail" required #greskaMail="ngModel">
+                                                            <mat-error *ngIf="greskaMail.errors?.['required']">
+                                                                Морате попунити поље
+                                                            </mat-error> 
+                                                        </mat-form-field>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_mail()" >Поништи измене</button>
+                                                    </div>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item *ngIf="!proveri_telefon()">
+                                                        <label class="podatak">Контакт телефон: </label>
+                                                        <label class="podatak">{{korisnik.telefon}}</label>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_telefon()">Измени</button>
+                                                    </mat-list-item>
+                                                    <div class="divChangeItem" *ngIf="proveri_telefon()">
+                                                        <label class="podatak">Контакт телефон: </label>
+                                                        <mat-form-field appearance="fill">
+                                                            <mat-label>Телефон</mat-label>
+                                                            <input name="nov_telefon" type="text" matInput placeholder="Унесите телефон" 
+                                                            [(ngModel)]="nov_telefon" required #greskaTelefon="ngModel">
+                                                            <mat-error *ngIf="greskaTelefon.errors?.['required']">
+                                                                Морате попунити поље
+                                                            </mat-error> 
+                                                        </mat-form-field>
+                                                        <button class="podatak3Desno" mat-flat-button (click)="izmeni_telefon()" >Поништи измене</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </mat-list>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+                <div class="sacuvajDugme">
+                    <mat-card-actions class="sacuvajDugme">
+                        <button mat-flat-button (click)="sacuvaj_izmene()">Сачувај измене</button>
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+        </div>
+        
+        <script src="" async defer></script>
+    </body>
+</html>

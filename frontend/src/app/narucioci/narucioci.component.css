@@ -1,0 +1,157 @@
+.spacer{
+    flex: 1 1 auto;
+}
+.podaci{
+    height: max-content;
+    width: 80%;
+    background-color: rgb(195, 197, 250);
+    flex-direction: column;
+    display: flex;
+    margin-top: 30px;
+}
+.sacuvajNarucioca{ 
+    overflow: hidden;
+    padding-left: 40px;
+    order: 3;
+}
+.inputForm{
+    min-width: 100px;
+    max-width: 500px;
+    width: 100%;
+}
+.input{
+    width: 50%;
+}
+.divInList{
+    background-color: rgb(231, 232, 249);
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: fit-content;
+    justify-content: space-between; 
+    border-radius: 10px;
+  
+}
+.expansion1{
+    background-color: rgb(144, 144, 225);
+    margin-top: 20px;
+   
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 20px;
+    
+    order: 1;
+}
+.podatak{
+    margin-bottom: 60px;
+}
+.expansionDiv{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.expansion2{
+    background-color: rgb(144, 144, 225);
+    margin-top: 20px;
+
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 20px;
+  
+    order: 2;
+}
+.expansion3{
+    background-color: rgb(144, 144, 225);
+    margin-top: 20px;
+ 
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 20px;
+  
+    order: 3;
+}
+.centerItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.expansion4{
+    background-color: rgb(144, 144, 225);
+    margin-top: 20px;
+   
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 20px;
+
+    order: 4;
+}
+.pretragaDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.sacuvajNarucioca{ 
+    overflow: hidden;
+    padding-left: 10px;
+    order: 3;
+    margin-top: 20px;
+}
+.marginDivLeft{
+    margin-left: 20px;
+    background-color: rgb(215, 216, 248);
+}
+.divInList2{
+    background-color: rgb(238, 238, 248);
+    margin-left: 30px;
+    margin-right: 50px;
+    flex-direction: column;
+    display: flex;
+    margin-bottom: 20px;
+ 
+}
+.rowDiv{
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 40px;
+    gap: 20px;
+    align-items: center;
+}
+.spaceLeft{
+    margin-left: 20px;
+}
+.spaceInList{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.spaceHorizontal{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 20px;
+}
+body { /* This is the CSS for body */
+    position: relative;
+    min-width: fit-content;
+    height: 100%; /* Height set to 100% means the body will extend from the top of the window to the bottom */
+    max-height: 100%; /* Maximum height is limited to 100% */
+    line-height: 1.5em; /* Line spacing is set to 1.5em */
+    background-color: rgb(33, 30, 47);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.selected{
+    background-color: rgb(60, 60, 112);
+}
+.rowDivItem{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}

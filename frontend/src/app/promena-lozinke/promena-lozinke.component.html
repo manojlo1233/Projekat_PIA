@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <mat-toolbar color="primary">
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Назад</button>
+            </div>
+            <span class="centerTitle">Систем фискализације у Србији</span>
+            
+        
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    <div class="centerTitle">
+                        Промена лозинке
+                    </div> 
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <form>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Стара лозинка</mat-label>
+                            <input name="stara_lozinka" type="text" matInput placeholder="Унесите стару лозинку"
+                             [(ngModel)]="stara_lozinka" required #greskaStara="ngModel">
+                            <mat-error *ngIf="greskaStara.errors?.['required']">
+                                Морате попунити поље
+                            </mat-error>
+                           
+                        </mat-form-field>
+                    </form>
+                    <form class="spaceDown">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Унети нову лозинку</mat-label>
+                            <input name="nova_lozinka" type="text" matInput placeholder="Унесите нову лозинку" 
+                            [(ngModel)]="nova_lozinka" required #greskaNova="ngModel"
+                            pattern="^[A-Za-z]((?=.*\d)(?=.*[A-Za-z])(?=.*?[#\?!@\$%\^&\*\-\]\[\{\}])).*" required minlength="8" maxlength="12">
+                            <mat-error *ngIf="greskaNova.errors?.['required']">
+                                Морате попунити поље
+                            </mat-error>
+                            <mat-error *ngIf="greskaNova.errors?.['pattern']">
+                                Потребно је унети бар једно велико слово, један број и један специјалан карактер,
+                                и мора почињати словом
+                            </mat-error>
+                            <mat-error *ngIf="greskaNova.errors?.['minlength']">
+                                Потребно је унети најмање 8 карактера.
+                            </mat-error>
+                           
+                        </mat-form-field>            
+                    </form>
+
+                    <form>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Потврдите лозинку</mat-label>
+                            <input name="potvrda_nove" type="text" matInput placeholder="Поновите лозинку"
+                             [(ngModel)]="potvrda_nove" required #greskaPotvrda="ngModel">
+                            <mat-error *ngIf="greskaPotvrda.invalid && greskaPotvrda.touched">
+                                Потврдите лозинку
+                            </mat-error>
+                        </mat-form-field>
+                    </form>
+                    <form>
+                        <div class="rowDiv" *ngIf="!proveri_staru() || greskaNova.invalid || !nova_razlicita() || !potvrdi_novu_lozniku(), else dozvoli">
+                            <button mat-flat-button name="promena" disabled type="submit" (click)="promeni_lozinku()">Promeni lozinku</button>
+                        </div>
+                        <ng-template #dozvoli>
+                            <div class="rowDiv">
+                                <button mat-flat-button name="promena" type="submit" (click)="promeni_lozinku()">Promeni lozinku</button>
+                            </div>
+                            
+                        </ng-template>  
+                    </form>
+                    <div class="rowDiv">
+                        <div class="red" *ngIf="!proveri_staru() && nova_razlicita() && potvrdi_novu_lozniku()">
+                            Потврдите стару лозинку
+                        </div>
+                        <div class="red" *ngIf="proveri_staru && !nova_razlicita() && potvrdi_novu_lozniku()">
+                            Нова лозинка мора бити другачија од старе
+                        </div>
+                        <div class="red" *ngIf="proveri_staru() && nova_razlicita() && !potvrdi_novu_lozniku()">
+                            Потврдите нову лозинку
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <mat-toolbar color="primary">
+            <span>
+                Купац
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+           
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a>  
+            <a mat-button (click)="predji_na_pregled_racuna()">Преглед рачуна</a>  
+           
+        </mat-toolbar>
+        
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Преглед рачуна
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <mat-label>Број личне карте: {{dohv_licnu_kartu()}}</mat-label>
+                    
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">                      
+                        
+                            <ng-container matColumnDef="nazivP">
+                            <th *matHeaderCellDef> Предузеће</th>
+                            <td *matCellDef="let element"><div class="centerItem">
+                                {{dohv_naziv_preduzeca(element.preduzece)}}
+                            </div></td>
+                            </ng-container>
+                        
+                            
+                            <ng-container matColumnDef="nazivO">
+                                <th *matHeaderCellDef>Објекат</th>
+                                <td *matCellDef="let element">
+                                    <div class="centerItem">
+                                        {{element.placanje.objekat}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                        
+                            <ng-container matColumnDef="iznos">
+                                <th  *matHeaderCellDef>Износ</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        {{dohv_cenu_racuna(element.stavke)}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                        
+                            <ng-container matColumnDef="nacin_placanja">
+                            <th  *matHeaderCellDef>Начин плаћања</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{dohv_nacin_placanja(element.placanje)}}
+                                </div>  
+                            </td>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="pregled">
+                                <th  *matHeaderCellDef>Додај</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <button mat-flat-button class="dugmeTabela" (click)="open_popUp(element.datum)">Детаљи рачуна</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                                
+                            </tr>
+                        </table>
+                        
+                            
+                        <mat-radio-group [(ngModel)]="pregled">
+                            <div class="rowDiv">
+                                <mat-radio-button value="meseci">Преглед по месецима</mat-radio-button>
+                                <mat-radio-button value="dani">Преглед по данима</mat-radio-button>
+                            </div>  
+                        </mat-radio-group>     
+
+                        <div class="chartDiv" *ngIf="pregled === 'meseci'">
+                            <ngx-charts-bar-vertical 
+                            [view]="[850,400]"
+                            [results]="saleData1"
+                            [xAxisLabel]="'Потрошња'"
+                            [yAxisLabel]="'RSD'"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [gradient]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                            
+                
+                        <div class="chartDiv" *ngIf="pregled === 'dani'">
+                            <ngx-charts-bar-vertical 
+                            [view]="[800,400]"
+                            [results]="saleData2"
+                            [xAxisLabel]="'Потрошња'"
+                            [yAxisLabel]="'RSD'"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [gradient]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                        
+                        
+                </mat-card-content>
+            </mat-card>
+        </div>
+                
+        <div class="popUp" id="popUp" *ngIf="prikazan_racun">
+            <div class="centerItem1">
+                <mat-label>Детаљи рачуна:</mat-label>
+                <mat-list>
+                    <div class="columnDiv">
+                        <mat-list-item>
+                            <div class="rowDiv">
+                                <mat-label> Датум издавања: </mat-label>
+                                <mat-label>{{dohv_datum(prikazan_racun.datum)}}</mat-label>                           
+                            </div>
+                        </mat-list-item>
+                        
+                        <div class="columnDivGap">
+                            <mat-list-item *ngFor="let stavka of prikazan_racun.stavke">
+                                <div class="columnDivInList">
+                                    <mat-label>Ставка: </mat-label>
+                                    <div class="rowDivInList">
+                                        <mat-label>Артикал: </mat-label>
+                                        <mat-label>{{dohv_naziv_artikla(stavka.sifra)}}</mat-label>                           
+                                    </div>
+                                    <div class="rowDivInList">
+                                        <mat-label> Количина: </mat-label>
+                                        <mat-label>{{stavka.kolicina}}</mat-label>                           
+                                    </div>
+                                    <div class="rowDivInList">
+                                        <mat-label> Цена: </mat-label>
+                                        <mat-label>{{stavka.cena}}</mat-label>                           
+                                    </div>
+                                </div>
+                            </mat-list-item>
+                        </div>
+                        
+                        <div *ngIf="placeno_karticom()">
+                            <mat-list-item>
+                                <div class="columnDivInList">
+                                    <div class="rowDiv">
+                                        <mat-label>Плаћање: </mat-label>
+                                        <mat-label>Картица</mat-label>                           
+                                    </div>
+                                    <div class="rowDivInList">
+                                        <mat-label>Слип рачун: </mat-label>
+                                        <mat-label>{{prikazan_racun.placanje.slip_racun}}</mat-label>                           
+                                    </div>  
+                                </div>
+                            </mat-list-item>
+                        </div>
+                       
+                        <div *ngIf="!placeno_karticom()">
+                            <mat-list-item>
+                                <div class="columnDivInList">
+                                    <div class="rowDiv">
+                                        <mat-label>Плаћање: </mat-label>
+                                        <mat-label>Чеком</mat-label>                           
+                                    </div>
+                                    <div class="rowDivInList">
+                                        <mat-label>Име: </mat-label>
+                                        <mat-label>{{prikazan_racun.placanje.ime}}</mat-label>                           
+                                    </div> 
+                                    <div class="rowDivInList">
+                                        <mat-label>Име: </mat-label>
+                                        <mat-label>{{prikazan_racun.placanje.prezime}}</mat-label>                           
+                                    </div> 
+                                </div>
+                            </mat-list-item>
+                        </div>
+                        
+                    </div>
+                    
+                </mat-list>
+                <button mat-flat-button (click)="close_popUp()">Затвори</button>
+                
+            </div>
+           
+        </div>
+        
+
+        <script src="" async defer></script>
+    </body>
+</html>

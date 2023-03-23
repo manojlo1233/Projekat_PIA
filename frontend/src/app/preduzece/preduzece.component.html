@@ -1,0 +1,286 @@
+<!DOCTYPE html5>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+
+        <mat-toolbar color="primary">
+            <span class>Предузеће</span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log Out</button>
+            </div>
+           
+            
+        
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    <div class="centerTitle">
+                        Детаљи предузећа
+                    </div> 
+                <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="columnDivContent">
+
+                    <h4 mat-header>Категорија: </h4>
+                    
+                    <mat-radio-group [(ngModel)]="tipPreduzeca">
+                        <div class="rowDiv">
+                            <mat-radio-button value="1">Продавница</mat-radio-button>
+                            <mat-radio-button value="2">Угоститељски објекат</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+                    <h4 mat-header>Sifra delatnosti:</h4>
+                    <form id="sifra_form" class="rowDiv">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Шифра</mat-label>
+                            <input name="sifra" type="number" matInput placeholder="Унесите шифру" 
+                            [(ngModel)]="sifra" required #greskaSifra="ngModel">
+                            <mat-error *ngIf="greskaSifra.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-label>Broj dodatih sifara: {{sifreDelatnosti.length}}</mat-label>
+                    </form>
+                    <div class="rowDiv" *ngIf="greskaSifra.valid">
+                        <button  mat-flat-button type="submit" (click)="dodajSifru()">Dodaj</button>
+                        <button  mat-flat-button type="submit" (click)="obrisiSifre()">Obrisi</button>
+                    </div>
+                    <div class="rowDiv" *ngIf="!greskaSifra.valid">
+                        <button mat-flat-button type="submit" disabled (click)="dodajSifru()">Dodaj</button>
+                        <button mat-flat-button type="submit" (click)="obrisiSifre()">Obrisi</button>
+                    </div>
+                    
+                    <p> Sifre delatnosti Republike Srbije : <a target="_blank" href="https://knjigovodja.in.rs/en/sifrarnik-delatnosti">Sifre</a></p>
+                    <p><b>*Moguce je uneti vise sifara.</b><br/>
+                        <b>*Nakon unesene jedne sifre pritisnite dugme Dodaj.</b><br/>
+                        <b>*Ukoliko zelite da obrisete do sada unete sifre pritisnite dugme Obrisi.</b>
+                    </p>
+                    
+                    <div class="rowDiv">
+                        <h4 mat-header>Preduzece je u sistemu PDV </h4>
+                        <mat-radio-button [(ngModel)]="pdv" name="pdv"></mat-radio-button>
+                    </div>
+                    
+                    <h4 mat-header>Банке и жиро рачуни:</h4>
+                    <form id="ziro_form" class="columnDiv">
+                        <div class="rowDiv">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Жиро рачун</mat-label>
+                                <input name="ziro_racun" type="text" matInput placeholder="Унесите жиро рачун" 
+                                [(ngModel)]="ziro_racun" required #greskaZiro="ngModel"
+                                required pattern="^\[\d{3}\]-\[\d{12}\]-\[\d{2}\]">
+                                <mat-error *ngIf="greskaZiro.errors?.['required']">
+                                    Морате попунити поље
+                                </mat-error>
+                                <mat-error *ngIf="greskaZiro.errors?.['pattern']">
+                                    Нисте унели жиро рачун у одговарајућој форми
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-label>Број додатих рачуна: {{ziro_racuni.length}}</mat-label>
+                        </div>
+                        <div class="rowDiv">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Банка</mat-label>
+                                <mat-select [(ngModel)]="banka" name="banka" required #greskaBanka="ngModel">
+                                    <mat-option *ngFor="let b of sveBanke" value="{{b.naziv}}">
+                                        {{b.naziv}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="greskaBanka.invalid">
+                                    Морате изабрати банку
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div *ngIf="(greskaZiro.invalid) || (greskaBanka.invalid)" class="rowDiv">
+                            <button name="dodaj" mat-flat-button disabled type="submit" (click)="dodajZiro_racun()">Додај</button>
+                            <button name="obrisi" mat-flat-button type="submit" (click)="obrisiZiro_racune()">Обриши</button>
+                        </div>
+                        <div class="rowDiv" *ngIf="!greskaZiro.invalid && !greskaBanka.invalid"> 
+                            <button name="dodaj" mat-flat-button mat-flat-button type="submit" (click)="dodajZiro_racun()">Додај</button>
+                            <button name="obrisi" mat-flat-button type="submit" (click)="obrisiZiro_racune()">Обриши</button>
+                        </div>
+                        
+                    </form>
+                    
+                    <p><b>*Unos ziro racuna: [3_cifre]-[12_cifara]-[2_cifre].</b><br/>
+                    <b>*Moguce je uneti vise ziro racuna.</b><br/>
+                    <b>*Nakon unesenog ziro racuna pritisnite dugme Dodaj.</b><br/>
+                    <b>*Ukoliko zelite da obrisete do sada unete ziro racune pritisnite dugme Obrisi.</b></p>
+    
+                    <h4>Magacini</h4>
+                    
+                    <div class="rowDiv">
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Број магацина</mat-label>
+                            <input name="ziro_racun" type="number" matInput placeholder="Унесите број магацина" 
+                            [(ngModel)]="brojMagacina" required #greskaBrMagacina="ngModel">
+                            <mat-error *ngIf="greskaBrMagacina.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                       
+                    </div>
+                    
+                    <form id="mag_form" class="columnDiv">
+                        <div class="rowDiv">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Идентификатор магацина</mat-label>
+                                <input name="id_magacina" type="text" matInput placeholder="Унесите идентификатор" 
+                                [(ngModel)]="id_magacina" required #greskaIdMag="ngModel">
+                                <mat-error *ngIf="greskaIdMag.invalid">
+                                    Морате попунити поље
+                                </mat-error>
+                                
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Назив магацина</mat-label>
+                                <input name="magacin" type="text" matInput placeholder="Унесите назив" 
+                                [(ngModel)]="magacin" required #greskaMag="ngModel">
+                                <mat-error *ngIf="greskaMag.invalid">
+                                    Морате попунити поље
+                                </mat-error>
+                                
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="rowDiv" *ngIf="greskaBrMagacina.invalid || greskaMag.invalid || greskaIdMag.invalid">
+                            <button type="submit" disabled mat-flat-button (click)="dodaj_magacin()">Додај</button>
+                            <button type="submit" mat-flat-button (click)="obrisi_magacin()">Обриши</button>
+                        </div>
+                        <div class="rowDiv" *ngIf="!greskaBrMagacina.invalid && !greskaMag.invalid && !greskaIdMag.invalid">
+                            <button type="submit" mat-flat-button (click)="dodaj_magacin()">Додај</button>
+                            <button type="submit" mat-flat-button (click)="obrisi_magacin()">Обриши</button>
+                        </div>
+                        
+                    </form>
+                    <p>
+                        <b>*Unesite odgovarajuci broj magacina.</b><br/>
+                        <b>*Za unos pritisnite dugme Dodaj.</b><br/>
+                        <b>*Ukoliko zelite da obrisete do sada unete magacine pritisnite dugme Obrisi.</b><br/>
+                        <b>*Ukoliko zelite da promenite broj magacina, morate prvo obrisati prethodno <br/>
+                            unesene magacine klikom na dugme Obrisi, a zatim uneti nove magacine.</b>
+                    </p>
+    
+                <h4>Fiskalne kase</h4>
+                <div class="rowDiv">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Број каса</mat-label>
+                        <input name="brojKasa" type="number" matInput placeholder="Унесите број објеката" 
+                        [(ngModel)]="brojKasa" required #greskaBrKasa="ngModel">
+                        <mat-error *ngIf="greskaBrKasa.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                        
+                    </mat-form-field>
+                </div>
+                
+                <form id="kasa_form" class="columnDiv">
+                    <div class="rowDiv">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Назив објекта</mat-label>
+                            <input name="naziv_kase" type="text" matInput placeholder="Унесите назив објеката" 
+                            [(ngModel)]="naziv_kase" required #greskaNazivKasa="ngModel">
+                            <mat-error *ngIf="greskaNazivKasa.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Тип касе:</mat-label>
+                            <input name="tipKase" type="text" matInput placeholder="Унесите тип објеката" 
+                            [(ngModel)]="tipKase" required #greskaTipKasa="ngModel">
+                            <mat-error *ngIf="greskaTipKasa.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                    </div>
+                    <h4 mat-header>Lokacija objekta:</h4>
+                    <div class="rowDiv">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Држава</mat-label>
+                            <input name="drzava" type="text" matInput placeholder="Унесите државу" 
+                            [(ngModel)]="drzava" required #greskaDrzava="ngModel">
+                            <mat-error *ngIf="greskaDrzava.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Град</mat-label>
+                            <input name="grad" type="text" matInput placeholder="Унесите град" 
+                            [(ngModel)]="grad" required #greskaGrad="ngModel">
+                            <mat-error *ngIf="greskaGrad.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Улица и број</mat-label>
+                            <input name="ulica_broj" type="text" matInput placeholder="Унесите улицу и број" 
+                            [(ngModel)]="ulica_broj" required #greskaUlica_broj="ngModel">
+                            <mat-error *ngIf="greskaUlica_broj.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                            
+                        </mat-form-field>
+                    </div>
+                   
+                    <div class="rowDiv" *ngIf="greskaUlica_broj.invalid || greskaGrad.invalid || greskaDrzava.invalid ||
+                                greskaTipKasa.invalid || greskaNazivKasa.invalid || greskaBrKasa.invalid, else dodajKase">
+                        <button mat-flat-button disabled (click)="dodaj_kasu()">Dodaj</button>
+                        <button mat-flat-button (click)="obrisi_kase()">Obrisi</button>
+                    </div>
+                    <ng-template #dodajKase>
+                        <div class="rowDiv">
+                        <button mat-flat-button (click)="dodaj_kasu()">Dodaj</button>
+                        <button mat-flat-button (click)="obrisi_kase()">Obrisi</button>
+                    </div>
+                    </ng-template>
+                    
+                    
+                </form>
+                    <p>
+                        <b>*Unesite odgovarajuci broj fiskalnih kasa.</b><br/>
+                        <b>*Za unos pritisnite dugme Dodaj.</b><br/>
+                        <b>*Ukoliko zelite da obrisete do sada unete fiskalne kase pritisnite dugme Obrisi.</b><br/>
+                        <b>*Ukoliko zelite da promenite broj fiskalnih kasa, morate prvo obrisati prethodno <br/>
+                            unesene kase klikom na dugme Obrisi, a zatim uneti nove fiskalne kase.</b>
+                    </p>
+                <div class="rowDiv" *ngIf="!proveri(), else dozvoli">
+                    <button mat-flat-button disabled (click)="zavrsi()">Заврши</button>
+                </div>
+                <ng-template #dozvoli>
+                    <div class="rowDiv">
+                        <button mat-flat-button (click)="zavrsi()">Заврши</button>
+                    </div>
+
+                </ng-template>
+                    
+                   
+              
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        
+
+           
+    </body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <mat-toolbar color="primary">
+            <span>
+                Предузеће
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button type="submit" (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a>  
+            <a mat-button (click)="predji_na_pregled_izvestaja()">Преглед извештаја</a>
+            <a mat-button class="selected" (click)="predji_na_izdavanje_racuna()">Издаванје рачуна</a> 
+            <a mat-button *ngIf="proveri_korisnika()" (click)="predji_na_stolove()">Распоред столова</a>
+            <a mat-button (click)="predji_na_raspored()">Распоред артикала</a>
+            <a mat-button (click)="predji_na_robe_i_usluge()">Робе и услуге</a>
+            <a mat-button (click)="predji_na_narucioce()">Наручиоци</a>
+            <a mat-button (click)="predji_na_podatke()">Подаци о предузећу</a>
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Издавање рачуна
+                <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <div class="rowDiv" *ngIf="proveri_korisnika()">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Изаберите објекат</mat-label>
+                            <mat-select [(ngModel)]="objekat">
+                                <mat-option *ngFor="let obj of moji_objekti" value="{{obj.naziv}}">
+                                {{obj.naziv}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Изаберите простор</mat-label>
+                            <mat-select [(ngModel)]="prostor">
+                                <mat-option value="basta">Башта</mat-option>
+                                <mat-option value="sala">Сала</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <form>
+                            <button mat-flat-button class="dugme" (click)="ucitaj_prostor()" >Учитај</button>
+                        </form>
+                    </div>
+                    <div *ngIf="proveri_korisnika()">
+                        <canvas id="canvas" class="canvas" width="1160px" height="600" >
+    
+                        </canvas>
+                    </div>
+                   
+                    <mat-divider></mat-divider>
+                    
+                    <mat-label>Магацини</mat-label>
+                    <div *ngFor="let m of moji_magacini" class="tabelaDiv">
+
+                        <div class="rowDiv">
+                           
+                            <div *ngIf="!proveri_racun(m.naziv), else ne_otvori" class="rowDivFit">
+                                <button mat-flat-button (click)="otvori_racun(m.naziv)">Отвори рачун</button>
+                            </div>
+                            <ng-template #ne_otvori>
+                                <button mat-flat-button disabled (click)="otvori_racun(m.naziv)">Отвори рачун</button>
+                            </ng-template>
+                            
+                        </div>
+
+                        <table mat-table [dataSource]="m.artikli" class="mat-elevation-z8">                      
+                            
+                            <ng-container matColumnDef="nazivP">
+                            <th *matHeaderCellDef>Производ</th>
+                            <td *matCellDef="let element"><div class="centerItem">
+                                {{nadji_naziv_artikla(element.sifra)}}
+                            </div></td>
+                            </ng-container>
+                        
+                            
+                            <ng-container matColumnDef="nazivM">
+                                <th *matHeaderCellDef>Магацин</th>
+                                <td *matCellDef="let element">
+                                    <div class="centerItem">
+                                        {{m.naziv}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                        
+                            <ng-container matColumnDef="cena">
+                                <th  *matHeaderCellDef>Цена</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        {{element.prodajna_cena}}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dugme">
+                            <th  *matHeaderCellDef>Додај</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    <div *ngIf="proveri_racun(m.naziv), else zatvori">
+                                        <button mat-flat-button class="dugmeTabela" (click)="dodaj_stavku(m.naziv, element.sifra, element.prodajna_cena)">Додај ставку</button>
+                                    </div>
+                                    <ng-template #zatvori>
+                                        <button mat-flat-button class="dugmeTabela" disabled>Додај ставку</button>
+                                    </ng-template>
+                                </div>  
+                            </td>
+                            </ng-container>
+                        
+                            
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                                
+                            </tr>
+                        </table>
+                        <div class="rowDiv" *ngIf="proveri_racun(m.naziv), else dozvoliIzdavanje">
+                            <button mat-flat-button (click)="izdaj_racun(m.naziv)">Издај рачун</button>
+                        </div>
+                        <ng-template #dozvoliIzdavanje>
+                            <div class="rowDiv">
+                                <button mat-flat-button disabled (click)="izdaj_racun(m.naziv)">Издај рачун</button>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div *ngIf="!proveri_korisnika()" class="cardContent1">
+                        <mat-label>Објекти</mat-label>
+                        <div *ngFor="let o of moji_objekti" class="tabelaDiv">
+
+                            <div class="rowDiv">
+                               
+                                <div *ngIf="!proveri_racun(o.naziv), else ne_otvori" class="rowDivFit">
+                                    <button mat-flat-button (click)="otvori_racun(o.naziv)">Отвори рачун</button>
+                                </div>
+                                <ng-template #ne_otvori>
+                                    <button mat-flat-button disabled (click)="otvori_racun(o.naziv)">Отвори рачун</button>
+                                </ng-template>
+                                
+                            </div>
+    
+                            <table mat-table [dataSource]="o.artikli" class="mat-elevation-z8">                      
+                                
+                                <ng-container matColumnDef="nazivP">
+                                <th *matHeaderCellDef>Производ</th>
+                                <td *matCellDef="let element"><div class="centerItem">
+                                    {{nadji_naziv_artikla(element.sifra)}}
+                                </div></td>
+                                </ng-container>
+                            
+                                
+                                <ng-container matColumnDef="nazivO">
+                                    <th *matHeaderCellDef>Објекат</th>
+                                    <td *matCellDef="let element">
+                                        <div class="centerItem">
+                                            {{o.naziv}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            
+                            
+                                <ng-container matColumnDef="cena">
+                                    <th  *matHeaderCellDef>Цена</th>
+                                    <td  *matCellDef="let element"> 
+                                        <div class="centerItem">
+                                            {{element.prodajna_cena}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Додај</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <div *ngIf="proveri_racun(o.naziv), else zatvori">
+                                            <button mat-flat-button class="dugmeTabela" (click)="dodaj_stavku(o.naziv, element.sifra, element.prodajna_cena)">Додај ставку</button>
+                                        </div>
+                                        <ng-template #zatvori>
+                                            <button mat-flat-button class="dugmeTabela" disabled>Додај ставку</button>
+                                        </ng-template>
+                                    </div>  
+                                </td>
+                                </ng-container>
+                            
+                                
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns3;">
+                                    
+                                </tr>
+                            </table>
+                            <div class="rowDiv" *ngIf="proveri_racun(o.naziv), else dozvoliIzdavanje">
+                                <button mat-flat-button (click)="izdaj_racun(o.naziv)">Издај рачун</button>
+                            </div>
+                            <ng-template #dozvoliIzdavanje>
+                                <div class="rowDiv">
+                                    <button mat-flat-button disabled (click)="izdaj_racun(o.naziv)">Издај рачун</button>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div *ngIf="proveri_korisnika() && ucitani_stolovi.length > 0" class="cradContent1">
+                        <mat-label>Учитан објекат и просто</mat-label>
+                        <div *ngFor="let sto of ucitani_stolovi" class="tabelaDiv">
+
+                            <div class="rowDiv">
+                               
+                                <div *ngIf="!proveri_racun_sto(sto.id), else ne_otvori" class="rowDivFit">
+                                    <button mat-flat-button (click)="otvori_racun_sto(sto.id)">Отвори рачун</button>
+                                </div>
+                                <ng-template #ne_otvori>
+                                    <button mat-flat-button disabled >Отвори рачун</button>
+                                </ng-template>
+                                
+                            </div>
+    
+                            <table mat-table [dataSource]="artikli_prikazanog_objekta" class="mat-elevation-z8">                      
+                                
+                                <ng-container matColumnDef="nazivP">
+                                <th *matHeaderCellDef>Производ</th>
+                                <td *matCellDef="let element"><div class="centerItem">
+                                    {{nadji_naziv_artikla(element.sifra)}}
+                                </div></td>
+                                </ng-container>
+                            
+                                
+                                <ng-container matColumnDef="nazivO">
+                                    <th *matHeaderCellDef>Објекат</th>
+                                    <td *matCellDef="let element">
+                                        <div class="centerItem">
+                                            {{objekat}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            
+                                <ng-container matColumnDef="cena">
+                                    <th  *matHeaderCellDef>Цена</th>
+                                    <td  *matCellDef="let element"> 
+                                        <div class="centerItem">
+                                            {{element.prodajna_cena}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sto">
+                                    <th  *matHeaderCellDef>ID Стола</th>
+                                    <td  *matCellDef="let element"> 
+                                        <div class="centerItem">
+                                            {{sto.id}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Додај</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <div *ngIf="proveri_racun_sto(sto.id), else zatvori">
+                                            <button mat-flat-button class="dugmeTabela" (click)="dodaj_stavku_sto(element.sifra, element.prodajna_cena, sto.id)">Додај ставку</button>
+                                        </div>
+                                        <ng-template #zatvori>
+                                            <button mat-flat-button class="dugmeTabela" disabled>Додај ставку</button>
+                                        </ng-template>
+                                    </div>  
+                                </td>
+                                </ng-container>
+                            
+                                
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns4;">
+                                    
+                                </tr>
+                            </table>
+                            <div class="rowDiv" *ngIf="proveri_racun_sto(sto.id), else dozvoliIzdavanje">
+                                <button mat-flat-button (click)="izdaj_racun_sto(sto.id)">Издај рачун</button>
+                            </div>
+                            <ng-template #dozvoliIzdavanje>
+                                <div class="rowDiv">
+                                    <button mat-flat-button disabled >Издај рачун</button>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                   
+                   
+                    
+                 </mat-card-content>
+            </mat-card>
+            
+        </div>
+
+        <div class="popUp" id="popUp">
+            <div class="centerItem1">
+                <mat-label header>Количина артикла која се купује</mat-label>
+                <div>
+                   
+                    <mat-form-field appearance="fill">
+                        <mat-label>Количина</mat-label>
+                        <input name="kolicina_magacin" type="number" matInput placeholder="Унесите количину артикла" 
+                        [(ngModel)]="kolicina_magacin" required #greskaKolicina="ngModel">
+                        <mat-error *ngIf="greskaKolicina.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="centerItem">
+                    <form class="rowDivFit">
+                        <div class="rowDivFit" *ngIf="!greskaKolicina.invalid, else dozvoliDodaj">
+                            <button mat-flat-button (click)="unesi_stavku()">Додај</button>
+                        </div>
+                        <ng-template #dozvoliDodaj>
+                            <button mat-flat-button disabled (click)="unesi_stavku()">Додај</button>
+                        </ng-template>
+                        <button mat-flat-button (click)="close_popUp()">Затвори</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+
+
+
+        <div class="popUp" id="popUp1">
+            <div class="centerItem3">
+                
+                <mat-label header>Изаберите начин куповине:</mat-label>
+                <mat-radio-group  aria-label="Select an option" [(ngModel)]="nacin_kupovine">
+                    <div class="radioDiv">
+                        <mat-radio-button value="gotovina">Готовина</mat-radio-button>
+                        <mat-radio-button value="cek">Чек</mat-radio-button>
+                        <mat-radio-button value="kartica">Картица</mat-radio-button>
+                        <mat-radio-button value="virman">Вирман</mat-radio-button>
+                    </div>
+                </mat-radio-group>
+                <mat-expansion-panel class="expansion">
+                    <mat-expansion-panel-header class="centerItem">
+                        <mat-panel-title >
+                            Плаћање
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngIf="nacin_kupovine == 'gotovina'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Вредност готовине:</mat-label>
+                            <input name="gotovina_vrednost" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="gotovina_vrednost" required #greskaGotovina_vrednost="ngModel">
+                            <mat-error *ngIf="greskaGotovina_vrednost.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта: </mat-label>
+                            <input name="licna_karta_kes" type="number" matInput placeholder="Опционо" 
+                            [(ngModel)]="licna_karta_kes">
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="nacin_kupovine == 'cek'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Име купца:</mat-label>
+                            <input name="ime_kupac" type="text" matInput placeholder="Унесите име" 
+                            [(ngModel)]="ime_kupac" required #greskaime_kupac="ngModel">
+                            <mat-error *ngIf="greskaime_kupac.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Презиме купца: </mat-label>
+                            <input name="prezime_kupac" type="text" matInput placeholder="Унесите презиме" 
+                            [(ngModel)]="prezime_kupac" required #greskaprezime_kupac="ngModel">
+                            <mat-error *ngIf="greskaprezime_kupac.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта:</mat-label>
+                            <input name="licna_karta_cek" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="licna_karta_cek" required #greskalicna_karta_cek="ngModel">
+                            <mat-error *ngIf="greskalicna_karta_cek.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="nacin_kupovine == 'kartica'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта:</mat-label>
+                            <input name="licna_karta_kartica" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="licna_karta_kartica" required #greskalicna_karta_kartica="ngModel">
+                            <mat-error *ngIf="greskalicna_karta_kartica.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Број слип рачуна: </mat-label>
+                            <input name="broj_slip_racuna" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="broj_slip_racuna" required #greskabroj_slip_racuna="ngModel">
+                            <mat-error *ngIf="greskabroj_slip_racuna.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div *ngIf="nacin_kupovine == 'virman'" class="divInList">
+                       
+                            <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">                      
+                            
+                                <ng-container matColumnDef="narucilac">
+                                <th *matHeaderCellDef>Наручилац</th>
+                                <td *matCellDef="let element"><div class="centerItem">
+                                    {{element.narucilac}}
+                                </div></td>
+                                </ng-container>
+                            
+                                
+                                <ng-container matColumnDef="broj_dana_placanja">
+                                    <th *matHeaderCellDef>Број дана плаћања</th>
+                                    <td *matCellDef="let element">
+                                        <div class="centerItem">
+                                            {{element.broj_dana_placanja}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            
+                            
+                                <ng-container matColumnDef="procenat_rabata">
+                                    <th  *matHeaderCellDef>Проценат рабата</th>
+                                    <td  *matCellDef="let element"> 
+                                        <div class="centerItem">
+                                            {{element.procenat_rabata}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Изабери</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <div *ngIf="narucioc_kor_ime != element.narucilac, else postavljenNarucilac">
+                                            <button mat-flat-button class="dugmeTabela" (click)="postavi_narucilaca(element.narucilac)" >Изабери</button>
+                                        </div>
+                                        <ng-template #postavljenNarucilac>
+                                            <button mat-flat-button class="dugmeTabela" disabled (click)="postavi_narucilaca(element.narucilac)" >Изабери</button>
+                                        </ng-template>
+                                    </div>  
+                                </td>
+                                </ng-container>
+                            
+                                
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns2;">
+                                    
+                                </tr>
+                            </table>
+                      
+                        
+                    </div>
+                </mat-expansion-panel>
+                <div class="rowDivFit">
+                    <button mat-flat-button (click)="potvrdi_izdavanje()">Потврди</button>
+                    <button mat-flat-button (click)="close_popUp2()">Одустани</button>
+                </div>
+            </div>  
+
+        </div>
+
+
+        <div class="popUp" id="popUp3">
+            <div class="centerItem1">
+                <mat-label header>Количина артикла која се купује</mat-label>
+                <div>
+                   
+                    <mat-form-field appearance="fill">
+                        <mat-label>Количина</mat-label>
+                        <input name="kolicina_magacin" type="number" matInput placeholder="Унесите количину артикла" 
+                        [(ngModel)]="kolicina_magacin" required #greskaKolicina="ngModel">
+                        <mat-error *ngIf="greskaKolicina.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="centerItem">
+                    <form class="rowDivFit">
+                        <div class="rowDivFit" *ngIf="!greskaKolicina.invalid, else dozvoliDodaj">
+                            <button mat-flat-button (click)="unesi_stavku_sto()">Додај</button>
+                        </div>
+                        <ng-template #dozvoliDodaj>
+                            <button mat-flat-button disabled (click)="unesi_stavku()">Додај</button>
+                        </ng-template>
+                        <button mat-flat-button (click)="close_popUp3()">Затвори</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <div class="popUp" id="popUp4">
+            <div class="centerItem3">
+                
+                <mat-label header>Изаберите начин куповине:</mat-label>
+                <mat-radio-group  aria-label="Select an option" [(ngModel)]="nacin_kupovine">
+                    <div class="radioDiv">
+                        <mat-radio-button value="gotovina">Готовина</mat-radio-button>
+                        <mat-radio-button value="cek">Чек</mat-radio-button>
+                        <mat-radio-button value="kartica">Картица</mat-radio-button>
+                        <mat-radio-button value="virman">Вирман</mat-radio-button>
+                    </div>
+                </mat-radio-group>
+                <mat-expansion-panel class="expansion">
+                    <mat-expansion-panel-header class="centerItem">
+                        <mat-panel-title >
+                            Плаћање
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngIf="nacin_kupovine == 'gotovina'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Вредност готовине:</mat-label>
+                            <input name="gotovina_vrednost" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="gotovina_vrednost" required #greskaGotovina_vrednost="ngModel">
+                            <mat-error *ngIf="greskaGotovina_vrednost.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта: </mat-label>
+                            <input name="licna_karta_kes" type="number" matInput placeholder="Опционо" 
+                            [(ngModel)]="licna_karta_kes">
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="nacin_kupovine == 'cek'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Име купца:</mat-label>
+                            <input name="ime_kupac" type="text" matInput placeholder="Унесите име" 
+                            [(ngModel)]="ime_kupac" required #greskaime_kupac="ngModel">
+                            <mat-error *ngIf="greskaime_kupac.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Презиме купца: </mat-label>
+                            <input name="prezime_kupac" type="text" matInput placeholder="Унесите презиме" 
+                            [(ngModel)]="prezime_kupac" required #greskaprezime_kupac="ngModel">
+                            <mat-error *ngIf="greskaprezime_kupac.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта:</mat-label>
+                            <input name="licna_karta_cek" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="licna_karta_cek" required #greskalicna_karta_cek="ngModel">
+                            <mat-error *ngIf="greskalicna_karta_cek.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="nacin_kupovine == 'kartica'" class="divInList">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Лична карта:</mat-label>
+                            <input name="licna_karta_kartica" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="licna_karta_kartica" required #greskalicna_karta_kartica="ngModel">
+                            <mat-error *ngIf="greskalicna_karta_kartica.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Број слип рачуна: </mat-label>
+                            <input name="broj_slip_racuna" type="number" matInput placeholder="Унесите број" 
+                            [(ngModel)]="broj_slip_racuna" required #greskabroj_slip_racuna="ngModel">
+                            <mat-error *ngIf="greskabroj_slip_racuna.invalid">
+                                Морате попунити поље
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div *ngIf="nacin_kupovine == 'virman'" class="divInList">
+                       
+                            <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">                      
+                            
+                                <ng-container matColumnDef="narucilac">
+                                <th *matHeaderCellDef>Наручилац</th>
+                                <td *matCellDef="let element"><div class="centerItem">
+                                    {{element.narucilac}}
+                                </div></td>
+                                </ng-container>
+                            
+                                
+                                <ng-container matColumnDef="broj_dana_placanja">
+                                    <th *matHeaderCellDef>Број дана плаћања</th>
+                                    <td *matCellDef="let element">
+                                        <div class="centerItem">
+                                            {{element.broj_dana_placanja}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            
+                            
+                                <ng-container matColumnDef="procenat_rabata">
+                                    <th  *matHeaderCellDef>Проценат рабата</th>
+                                    <td  *matCellDef="let element"> 
+                                        <div class="centerItem">
+                                            {{element.procenat_rabata}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Изабери</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <div *ngIf="narucioc_kor_ime != element.narucilac, else postavljenNarucilac">
+                                            <button mat-flat-button class="dugmeTabela" (click)="postavi_narucilaca(element.narucilac)" >Изабери</button>
+                                        </div>
+                                        <ng-template #postavljenNarucilac>
+                                            <button mat-flat-button class="dugmeTabela" disabled (click)="postavi_narucilaca(element.narucilac)" >Изабери</button>
+                                        </ng-template>
+                                    </div>  
+                                </td>
+                                </ng-container>
+                            
+                                
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns2;">
+                                    
+                                </tr>
+                            </table>
+                      
+                        
+                    </div>
+                </mat-expansion-panel>
+                <div class="rowDivFit">
+                    <button mat-flat-button (click)="potvrdi_izdavanje_sto()">Потврди</button>
+                    <button mat-flat-button (click)="close_popUp4()">Одустани</button>
+                </div>
+            </div>  
+
+        </div>
+
+        <script src="" async defer></script>
+    </body>
+</html>

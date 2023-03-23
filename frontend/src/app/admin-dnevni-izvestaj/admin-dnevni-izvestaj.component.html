@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <mat-toolbar color="primary">
+            <span>
+                Администратор
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+            </div>
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pregled_preduzeca()">Преглед предузећа</a>  
+            <a mat-button (click)="predji_na_registraciju()">Регистрација корисника</a>
+            <a mat-button (click)="predji_na_dnevne_izvestaje()">Преглед дневних извештаја</a>
+        </mat-toolbar>
+
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Преглед дневних извештаја
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+                    <div class="rowDiv">
+                       
+                        <mat-form-field appearance="fill">
+                        <mat-label>Назив предузећа</mat-label>
+                        <input name="naziv_preduzeca" type="text" matInput placeholder="Унесите назив предузећа"
+                            [(ngModel)]="naziv_preduzeca">
+                        </mat-form-field>
+                    
+                    
+                        <mat-form-field appearance="fill">
+                        <mat-label>ПИБ</mat-label>
+                        <input name="pib_preduzeca" type="number" matInput placeholder="Унесите ПИБ" 
+                        [(ngModel)]="pib_preduzeca">
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="fill">
+                        <mat-label>Датум од</mat-label>
+                        <input name="datum_od" type="date" matInput placeholder="Унесите датум" 
+                        [(ngModel)]="datum_od" required #greskaDatum_od="ngModel">
+                        <mat-error *ngIf="greskaDatum_od.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="fill">
+                        <mat-label>Датум до</mat-label>
+                        <input name="datum_do" type="date" matInput placeholder="Унесите датум" 
+                        [(ngModel)]="datum_do" required #greskaDatum_do="ngModel">
+                        <mat-error *ngIf="greskaDatum_do.invalid">
+                            Морате попунити поље
+                        </mat-error>
+                        </mat-form-field>
+                        <div *ngIf="!greskaDatum_do.invalid && !greskaDatum_od.invalid">
+                            <button mat-flat-button class="dugme" (click)="pretrazi()">Претражи</button>
+                        </div>
+                        <div *ngIf="greskaDatum_do.invalid || greskaDatum_od.invalid">
+                            <button mat-flat-button class="dugme" disabled (click)="pretrazi()">Претражи</button>
+                        </div>
+                       
+                        
+                    </div>
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">                      
+                                        
+                        <ng-container matColumnDef="nazivP">
+                        <th *matHeaderCellDef>Предузеће</th>
+                        <td *matCellDef="let element"><div class="centerItem">
+                            {{element.preduzece}}
+                        </div></td>
+                        </ng-container>
+                    
+                        
+                        <ng-container matColumnDef="pib">
+                            <th *matHeaderCellDef>ПИБ предузећа</th>
+                            <td *matCellDef="let element">
+                                <div class="centerItem">
+                                    {{element.pib}}
+                                </div>
+                            </td>
+                        </ng-container>
+                    
+                    
+                        <ng-container matColumnDef="ukupan_pazar">
+                            <th  *matHeaderCellDef>Укупан пазар</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.dnevni_pazar}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ukupan_pdv">
+                            <th  *matHeaderCellDef>Укупан ПДВ</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.pdv}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="datum">
+                            <th  *matHeaderCellDef>Датум</th>
+                            <td  *matCellDef="let element"> 
+                                <div class="centerItem">
+                                    {{element.dan}}
+                                </div>
+                                
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                            
+                        </tr>
+                    </table>
+                    
+                </mat-card-content>
+             </mat-card>
+        </div>
+        
+        <script src="" async defer></script>
+    </body>
+</html>

@@ -1,0 +1,197 @@
+.spacer{
+    flex: 1 1 auto;
+}
+.centerItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.podaci{
+    height: max-content;
+    width: 1200px;
+    background-color: rgb(195, 197, 250);
+    flex-direction: column;
+    display: flex;
+    margin-top: 30px;
+   
+}
+.cardContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+   
+}
+canvas{
+    width: 100%;
+    border-radius: 10px;
+    opacity: 0.8;
+    background-image: url('/assets/trava.jpg'); 
+    background-size: 40px 40px;
+}
+.rowDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+}
+.radioDiv{
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+}
+.dugme{
+    height: fit-content;
+    width: fit-content;
+}
+.tabelaDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+   
+}
+.divField{
+   
+    width: 60%;
+}
+.dugmeTabela{
+    background-color: rgb(195, 197, 250);
+}
+.popUp{
+    background-color: rgb(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+  
+}
+.open-popUp{
+    visibility: visible;
+}
+.centerItem1{
+    background-color: rgb(195, 197, 250);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
+    margin-top: 100px;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 15px;
+}
+.rowDivFit{
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+}
+.radioDiv{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+}
+.centerItem2{
+    background-color: rgb(195, 197, 250);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
+    margin-top: 100px;
+    padding: 20px;
+    gap: 20px;
+    border-radius: 15px;
+}
+.expansion{
+    background-color: rgb(144, 144, 225);
+    width: 100%;
+    height: fit-content;
+    
+ 
+}
+.centerItem3{
+    background-color: rgb(195, 197, 250);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
+    margin-top: 100px;
+    padding: 20px;
+    gap: 20px;
+    border-radius: 15px;
+    width: 40%;
+}
+.divInList{
+    background-color: rgb(231, 232, 249);
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    border-radius: 10px;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+.rasiri{
+    width: 100%;
+}
+th{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+table{
+    padding: 10px;
+    width: 100%;
+}
+
+.cradContent1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
+}
+.cardContent1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
+  
+}
+.spaceHorizontal{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 20px;
+}
+body { /* This is the CSS for body */
+    position: relative;
+    min-width: fit-content;
+    height: 100%; /* Height set to 100% means the body will extend from the top of the window to the bottom */
+    max-height: 100%; /* Maximum height is limited to 100% */
+    line-height: 1.5em; /* Line spacing is set to 1.5em */
+    background-color: rgb(33, 30, 47);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.selected{
+    background-color: rgb(60, 60, 112);
+}

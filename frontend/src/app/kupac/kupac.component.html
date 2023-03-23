@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <mat-toolbar color="primary">
+            <span>
+                Купац
+            </span>
+            <div class="spaceHorizontal">
+                <button mat-flat-button (click)="logout()">Log out</button>
+                <button mat-flat-button (click)="promeniLozinku()">Promeni lozinku</button>
+            </div>
+           
+            <div class="spacer"></div>
+            <a mat-button (click)="predji_na_pocetnu()">Почетна</a>  
+            <a mat-button (click)="predji_na_pregled_racuna()">Преглед рачуна</a>  
+           
+        </mat-toolbar>
+
+        
+        <div class="centerItem">
+            <mat-card class="podaci">
+                <mat-card-title>
+                    Распоред артикала
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="cardContent">
+
+                    <div *ngFor="let pred of sva_preduzeca" class="centerDiv">
+                        <table mat-table [dataSource]="dohvMagacine(pred)" class="mat-elevation-z8">                      
+                                    
+                            <ng-container matColumnDef="preduzece">
+                            <th *matHeaderCellDef> Предузеће</th>
+                            <td *matCellDef="let element"><div class="centerItem">
+                                {{pred.naziv}}
+                            </div></td>
+                            </ng-container>
+                        
+                            
+                            <ng-container matColumnDef="objekat">
+                                <th *matHeaderCellDef>Магацин</th>
+                                <td *matCellDef="let element">
+                                    <div class="centerItem">
+                                        {{element.naziv}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                        
+                            <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Преглед артикла</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <button mat-flat-button class="dugmeTabela" (click)="open_popUp('magacin', element.naziv, pred.kor_ime)">Преглед</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                                
+                            </tr>
+                        </table>
+                        <table mat-table [dataSource]="dohvObjekte(pred)" class="mat-elevation-z8">                      
+                                    
+                            <ng-container matColumnDef="preduzece">
+                            <th *matHeaderCellDef> Предузеће</th>
+                            <td *matCellDef="let element"><div class="centerItem">
+                                {{pred.naziv}}
+                            </div></td>
+                            </ng-container>
+                        
+                            
+                            <ng-container matColumnDef="objekat">
+                                <th *matHeaderCellDef>Објекат</th>
+                                <td *matCellDef="let element">
+                                    <div class="centerItem">
+                                        {{element.naziv}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                        
+                            <ng-container matColumnDef="dugme">
+                                <th  *matHeaderCellDef>Преглед артикла</th>
+                                <td  *matCellDef="let element"> 
+                                    <div class="centerItem">
+                                        <button mat-flat-button class="dugmeTabela" (click)="open_popUp('objekat', element.naziv, pred.kor_ime)">Преглед</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                                
+                            </tr>
+                        </table>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="popUp" id="popUp">
+            <div class="centerItem1">
+
+                <mat-label>Додај артикал</mat-label>
+                <form class="rowDiv" id="formPretraga">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Претрага по називу</mat-label>
+                        <input name="pretraga_naziv" type="text" matInput placeholder="Унесите назив артикла" 
+                        [(ngModel)]="pretraga_naziv" (input)="trazi_po_nazivu($event)">
+                        
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Претрага по произвођачу</mat-label>
+                        <input name="pretraga_proizvodjac" type="text" matInput placeholder="Унесите назив артикла" 
+                        [(ngModel)]="pretraga_proizvodjac" (input)="trazi_po_proizvodjacu($event)">
+                       
+                    </mat-form-field>
+                    
+                </form>
+                
+                
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">                      
+                        
+                    <ng-container matColumnDef="nazivP">
+                    <th *matHeaderCellDef> Назив</th>
+                    <td *matCellDef="let element"><div class="centerItem">
+                        {{element.naziv}}
+                    </div></td>
+                    </ng-container>
+                
+                    
+                    <ng-container matColumnDef="cena">
+                        <th *matHeaderCellDef>Цена</th>
+                        <td *matCellDef="let element">
+                            <div class="centerItem">
+                                {{element.cena}}
+                            </div>
+                        </td>
+                    </ng-container>
+                
+                
+                    <ng-container matColumnDef="proizvodjac">
+                        <th  *matHeaderCellDef>Произвођач</th>
+                        <td  *matCellDef="let element"> 
+                            <div class="centerItem">
+                                {{element.proizvodjac}}
+                            </div>
+                        </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns1;">
+                        
+                    </tr>
+                </table>
+                <div class="centerItem3">
+                    <button mat-flat-button (click)="close_popUp()">Затвори</button>
+                </div>
+                
+            </div>
+            
+        </div>
+        <script src="" async defer></script>
+    </body>
+</html>

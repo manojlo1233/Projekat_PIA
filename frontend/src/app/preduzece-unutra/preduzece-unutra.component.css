@@ -1,0 +1,45 @@
+.red{
+    color: red;
+}
+.spacer{
+    flex: 1 1 auto;
+}
+.spaceHorizontal{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 20px;
+}
+body { /* This is the CSS for body */
+    position: relative;
+    min-width: fit-content;
+    height: 100%; /* Height set to 100% means the body will extend from the top of the window to the bottom */
+    max-height: 100%; /* Maximum height is limited to 100% */
+    line-height: 1.5em; /* Line spacing is set to 1.5em */
+    background-color: rgb(33, 30, 47);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.selected{
+    background-color: rgb(60, 60, 112);
+}
+.centerItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.podaci{
+    height: max-content;
+    width: 40%;
+    background-color: rgb(195, 197, 250);
+    flex-direction: column;
+    display: flex;
+    margin-top: 30px;
+   
+}
+.cardContent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
