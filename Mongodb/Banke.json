@@ -1,0 +1,113 @@
+[{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ee5"
+  },
+  "naziv": "ADDIKO BANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ee6"
+  },
+  "naziv": "AIK BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ee7"
+  },
+  "naziv": "ALTA BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ee8"
+  },
+  "naziv": "API BANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ee9"
+  },
+  "naziv": "BANCA INTESA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eea"
+  },
+  "naziv": "BANKA POSTANSKA STEDIONICA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eeb"
+  },
+  "naziv": "BANK OF CHINA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eec"
+  },
+  "naziv": "CREDIT AGRICOLE BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eed"
+  },
+  "naziv": "EXPOBANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eee"
+  },
+  "naziv": "ERSTE BANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05eef"
+  },
+  "naziv": "EUROBANK DIREKTNA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef0"
+  },
+  "naziv": "HALKBANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef1"
+  },
+  "naziv": "NLB KOMERCIJALNA BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef2"
+  },
+  "naziv": "MIRABANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef3"
+  },
+  "naziv": "MOBI BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef4"
+  },
+  "naziv": "NASA AIK BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef5"
+  },
+  "naziv": "3 BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef6"
+  },
+  "naziv": "OTP BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef7"
+  },
+  "naziv": "PROCREDIT BANK"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef8"
+  },
+  "naziv": "RAIFFEISEN BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05ef9"
+  },
+  "id": 21,
+  "naziv": "SRPSKA BANKA"
+},{
+  "_id": {
+    "$oid": "62b9e92625b7773314e05efa"
+  },
+  "id": 22,
+  "naziv": "UNICREDIT BANK"
+}]

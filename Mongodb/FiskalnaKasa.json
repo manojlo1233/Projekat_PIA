@@ -1,0 +1,98 @@
+[{
+  "_id": {
+    "$oid": "62c84d7423e0b2d7d69c32c6"
+  },
+  "lokacija": {
+    "drzava": "Srbija ",
+    "grad": "Krusevac",
+    "ulicaBroj": "Zlatiborska 3"
+  },
+  "tip": "Kafana",
+  "artikli": [
+    {
+      "sifra": 2401,
+      "nabavna_cena": 70,
+      "prodajna_cena": 100,
+      "stanje_lagera": 15000,
+      "min_kolicina": 10000,
+      "max_kolicina": 20000
+    },
+    {
+      "sifra": 5003,
+      "nabavna_cena": 150,
+      "prodajna_cena": 200,
+      "stanje_lagera": 20000,
+      "min_kolicina": 10000,
+      "max_kolicina": 40000
+    },
+    {
+      "sifra": 3200,
+      "nabavna_cena": 80,
+      "prodajna_cena": 100,
+      "stanje_lagera": 15000,
+      "min_kolicina": 10000,
+      "max_kolicina": 20000
+    },
+    {
+      "nabavna_cena": 2,
+      "prodajna_cena": 2,
+      "stanje_lagera": 2,
+      "min_kolicina": 2,
+      "max_kolicina": 2
+    }
+  ],
+  "naziv": "Kod Aleksandre",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62c84d8b23e0b2d7d69c32c8"
+  },
+  "lokacija": {
+    "drzava": "Srbija",
+    "grad": "Krusevac",
+    "ulicaBroj": "Dusanova 15"
+  },
+  "tip": "Kladionica",
+  "artikli": [
+    {
+      "sifra": 2401,
+      "nabavna_cena": 80,
+      "prodajna_cena": 100,
+      "stanje_lagera": 15000,
+      "min_kolicina": 10000,
+      "max_kolicina": 20000
+    },
+    {
+      "sifra": 3200,
+      "nabavna_cena": 80,
+      "prodajna_cena": 100,
+      "stanje_lagera": 20000,
+      "min_kolicina": 17000,
+      "max_kolicina": 30000
+    }
+  ],
+  "naziv": "Akicanovic",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62cdaa0c02add800755db0b6"
+  },
+  "lokacija": {
+    "drzava": "Srbija",
+    "grad": "Krusevac",
+    "ulicaBroj": "Zlatiborska 13"
+  },
+  "tip": "Kafanica",
+  "artikli": [
+    {
+      "sifra": 5000,
+      "nabavna_cena": 100,
+      "prodajna_cena": 120,
+      "stanje_lagera": 10000,
+      "min_kolicina": 500,
+      "max_kolicina": 15000
+    }
+  ],
+  "naziv": "Srecni Dani",
+  "__v": 0
+}]

@@ -1,0 +1,85 @@
+[{
+  "_id": {
+    "$oid": "62cda66002add800755db02f"
+  },
+  "vlasnik": "aki123",
+  "kategorija": "ugostiteljski_objekat",
+  "sifre_delatnosti": [
+    {
+      "broj": 1234
+    },
+    {
+      "broj": 4123
+    }
+  ],
+  "PDV": false,
+  "ziro_racuni": [
+    {
+      "broj": "[555]-[652232154212]-[33]",
+      "banka": "UNICREDIT BANK"
+    }
+  ],
+  "broj_magacina": 2,
+  "magacini": [
+    {
+      "identifikator": "aki1"
+    },
+    {
+      "identifikator": "aki2"
+    }
+  ],
+  "broj_fis_kasa": 2,
+  "fis_kase": [
+    {
+      "drzava": "Srbija ",
+      "grad": "Krusevac",
+      "ulicaBroj": "Zlatiborska 3"
+    },
+    {
+      "drzava": "Srbija",
+      "grad": "Krusevac",
+      "ulicaBroj": "Dusanova 15"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62cffdc108e2318594d92025"
+  },
+  "vlasnik": "manojlo",
+  "kategorija": "ugostiteljski_objekat",
+  "sifre_delatnosti": [
+    {
+      "broj": 653214
+    },
+    {
+      "broj": 1421
+    }
+  ],
+  "PDV": true,
+  "ziro_racuni": [
+    {
+      "broj": "[542]-[652232154212]-[22]",
+      "banka": "BANCA INTESA"
+    },
+    {
+      "broj": "[002]-[652232154212]-[22]",
+      "banka": "ERSTE BANK"
+    }
+  ],
+  "broj_magacina": 1,
+  "magacini": [
+    {
+      "identifikator": "man1"
+    }
+  ],
+  "broj_fis_kasa": 1,
+  "fis_kase": [
+    {
+      "drzava": "Srbija",
+      "grad": "Krusevac",
+      "ulicaBroj": "Zlatiborska 13"
+    }
+  ],
+  "__v": 0
+}]

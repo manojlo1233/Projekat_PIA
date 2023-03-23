@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": "62c84cc523e0b2d7d69c32bd"
+  },
+  "identifikator": "aki1",
+  "naziv": "Aleksandrin Magacin1",
+  "artikli": [
+    {
+      "sifra": 3200,
+      "nabavna_cena": 50,
+      "prodajna_cena": 70,
+      "stanje_lagera": 50000,
+      "min_kolicina": 30000,
+      "max_kolicina": 70000
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62c84cce23e0b2d7d69c32c0"
+  },
+  "identifikator": "aki2",
+  "naziv": "Aleksandrin Magacin2",
+  "artikli": [
+    {
+      "sifra": 3200,
+      "nabavna_cena": 80,
+      "prodajna_cena": 100,
+      "stanje_lagera": 15000,
+      "min_kolicina": 10000,
+      "max_kolicina": 20000
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62cdaa0002add800755db0b4"
+  },
+  "identifikator": "man1",
+  "naziv": "Manojlov magacin",
+  "artikli": [
+    {
+      "sifra": 852,
+      "nabavna_cena": 60,
+      "prodajna_cena": 100,
+      "stanje_lagera": 15000,
+      "min_kolicina": 10000,
+      "max_kolicina": 20000
+    }
+  ],
+  "__v": 0
+}]

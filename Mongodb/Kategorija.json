@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "62c859719393d567e125af9b"
+  },
+  "preduzece": "aki123",
+  "kategorija": "Hrana",
+  "potkategorije": [
+    {
+      "potkategorija": "Meso"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62c859c59393d567e125afa4"
+  },
+  "preduzece": "aki123",
+  "kategorija": "Pice",
+  "potkategorije": [
+    {
+      "potkategorija": "Voda"
+    },
+    {
+      "potkategorija": "Sok"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62ce11bf35b8ae85d05dabca"
+  },
+  "preduzece": "manojlo",
+  "kategorija": "Pice",
+  "potkategorije": [
+    {
+      "potkategorija": "Gazirani Sok"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62ce11dc35b8ae85d05dabd0"
+  },
+  "preduzece": "manojlo",
+  "kategorija": "Hrana",
+  "potkategorije": [],
+  "__v": 0
+}]

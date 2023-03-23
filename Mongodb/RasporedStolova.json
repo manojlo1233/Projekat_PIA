@@ -1,0 +1,93 @@
+[{
+  "_id": {
+    "$oid": "62c849d2741fb6ed0cacafe6"
+  },
+  "preduzece": "aki123",
+  "objekat": {
+    "drzava": "Srbija ",
+    "grad": "Krusevac",
+    "ulicaBroj": "Zlatiborska 3"
+  },
+  "sala": [
+    {
+      "x_poz": 160,
+      "y_poz": 160,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": true,
+      "id": 1
+    },
+    {
+      "x_poz": 320,
+      "y_poz": 120,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": false,
+      "id": 30
+    },
+    {
+      "x_poz": 400,
+      "y_poz": 120,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": false,
+      "id": 25
+    }
+  ],
+  "basta": [
+    {
+      "x_poz": 120,
+      "y_poz": 120,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": true,
+      "id": 5
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62cdc712e6321fbf1ea0a542"
+  },
+  "preduzece": "manojlo",
+  "objekat": {
+    "drzava": "Srbija",
+    "grad": "Krusevac",
+    "ulicaBroj": "Zlatiborska 13"
+  },
+  "sala": [
+    {
+      "x_poz": 120,
+      "y_poz": 120,
+      "x_duzina": 160,
+      "y_duzina": 80,
+      "krug": false,
+      "id": 1
+    },
+    {
+      "x_poz": 280,
+      "y_poz": 240,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": true,
+      "id": 30
+    },
+    {
+      "x_poz": 200,
+      "y_poz": 240,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": true,
+      "id": 31
+    }
+  ],
+  "basta": [
+    {
+      "x_poz": 160,
+      "y_poz": 160,
+      "x_duzina": 80,
+      "y_duzina": 80,
+      "krug": true,
+      "id": 5
+    }
+  ]
+}]

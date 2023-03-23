@@ -1,0 +1,213 @@
+[{
+  "_id": {
+    "$oid": "62cdc6eacecb5ac12de5cbc0"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657652970828"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 852,
+      "kolicina": 15,
+      "cena": 1500,
+      "porez": 225
+    }
+  ],
+  "zatvoren": true,
+  "placanje": {
+    "ime": "Pera",
+    "prezime": "Peric",
+    "licna_karta": 321321321,
+    "objekat": "Manojlov magacin"
+  },
+  "sto": -1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62ce0e1235b8ae85d05daac3"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657799072632"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 5000,
+      "kolicina": 3,
+      "cena": 360,
+      "porez": 54
+    }
+  ],
+  "zatvoren": true,
+  "sto": 5,
+  "__v": 0,
+  "placanje": {
+    "ime_kupac": "Marko",
+    "prezime_kupac": "Markovic",
+    "licna_karta_cek": 1111122222,
+    "objekat": "Srecni Dani"
+  }
+},{
+  "_id": {
+    "$oid": "62ce117b35b8ae85d05dabbb"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657672098787"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 5000,
+      "kolicina": 2,
+      "cena": 240,
+      "porez": 24
+    }
+  ],
+  "zatvoren": true,
+  "sto": 1,
+  "__v": 0,
+  "placanje": {
+    "ime_kupac": "Pera",
+    "prezime_kupac": "Peric",
+    "licna_karta_cek": 321321321,
+    "objekat": "Kod brata manojla"
+  }
+},{
+  "_id": {
+    "$oid": "62ce126d35b8ae85d05dac0b"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657672301165"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 852,
+      "kolicina": 1000,
+      "cena": 100000,
+      "porez": 15000
+    }
+  ],
+  "zatvoren": true,
+  "placanje": {
+    "licna_karta": 321321321,
+    "slip_racun": 65845117,
+    "objekat": "Manojlov magacin"
+  },
+  "sto": -1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d0017d08e2318594d920c5"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657799037068"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 852,
+      "kolicina": 5000,
+      "cena": 500000,
+      "porez": 75000
+    }
+  ],
+  "zatvoren": true,
+  "placanje": {
+    "licna_karta": 1111122222,
+    "slip_racun": 45125471,
+    "objekat": "Manojlov magacin"
+  },
+  "sto": -1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d002b908e2318594d920f7"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657799365261"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 5000,
+      "kolicina": 50,
+      "cena": 6000,
+      "porez": 900
+    }
+  ],
+  "zatvoren": true,
+  "sto": 31,
+  "__v": 0,
+  "placanje": {
+    "licna_karta": 1111122222,
+    "slip_racun": 1234,
+    "objekat": "Srecni Dani"
+  }
+},{
+  "_id": {
+    "$oid": "62d002c708e2318594d920ff"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657799398549"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 5000,
+      "kolicina": 3,
+      "cena": 360,
+      "porez": 54
+    }
+  ],
+  "zatvoren": true,
+  "sto": 30,
+  "__v": 0,
+  "placanje": {
+    "ime_kupac": "Petar",
+    "prezime_kupac": "Peric",
+    "licna_karta_cek": 321321321,
+    "objekat": "Srecni Dani"
+  }
+},{
+  "_id": {
+    "$oid": "62d003a008e2318594d92134"
+  },
+  "preduzece": "manojlo",
+  "datum": {
+    "$date": {
+      "$numberLong": "1657799604442"
+    }
+  },
+  "stavke": [
+    {
+      "sifra": 5000,
+      "kolicina": 5,
+      "cena": 600,
+      "porez": 90
+    }
+  ],
+  "zatvoren": true,
+  "sto": 30,
+  "__v": 0,
+  "placanje": {
+    "licna_karta": 1111122222,
+    "slip_racun": 3214,
+    "objekat": "Srecni Dani"
+  }
+}]
